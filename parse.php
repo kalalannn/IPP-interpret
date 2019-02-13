@@ -90,24 +90,23 @@ if(trim(fgets(STDIN)) != '.IPPcode19'){
 	exit (HEAD_ERROR);
 }
 
-$z_addr_instr = array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
-	'RETURN', 'BREAK');
-$o_addr_instr_var = array('DEFVAR', 'POPS'); //var
-$o_addr_instr_symb = array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'); //symb
-$o_addr_instr_label = array('LABEL', 'CALL', 'JUMP'); 	//label
 
-$tw_addr_instr_var_symb = array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT');
-$tw_addr_instr_var_typ = array('READ');
 
-$tr_addr_instr_var_symb_symb = array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 
-	'GT', 'EQ', 'AND', 'OR', 'STR2INT', 'CONCAT', 'GETCHAR', 'SETCHAR');
-$tr_addr_instr_label_symb_symb = array('JUMPIFEQ', 'JUMPIFNEQ');
+$glob_array = array(
+			array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
+				'RETURN', 'BREAK'),
+			array('DEFVAR', 'POPS'), //var
+			array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), //symb
+			array('LABEL', 'CALL', 'JUMP'), 	//label
+			array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
+			array('READ'),
+			array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 
+				'GT', 'EQ', 'AND', 'OR', 'STR2INT', 'CONCAT', 'GETCHAR', 'SETCHAR'),
+			array('JUMPIFEQ', 'JUMPIFNEQ')
+			);
 
-$glob_array = array($z_addr_instr, $o_addr_instr_var, $o_addr_instr_symb,
-	$o_addr_instr_label, $tw_addr_instr_var_symb, $tw_addr_instr_var_typ,
-	$tr_addr_instr_var_symb_symb, $tr_addr_instr_label_symb_symb);
 //var_dump($glob_array); 
-//
+
 while($x = trim(strtoupper(strtok(fgets(STDIN), ' ')))){
 	for ($i=0; $i<count($glob_array); $i++){
 		if (in_array($x, $glob_array[$i])){
