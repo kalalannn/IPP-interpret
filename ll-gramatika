@@ -1,0 +1,46 @@
+<program> 		-> <instruction> + <program>
+<program> 		-> E
+<instruction> 	-> <name> + <attr>
+<attr>			-> E
+<attr>			-> <attr> + <attr>
+<attr>			-> <symb>
+<attr>			-> <label>
+
+<var> 		-> <frame> + '@' + <name>
+<frame> 	-> 'GF'
+<frame> 	-> 'LF'
+<frame>		-> 'TF'
+
+<symb> 		-> <var>
+<symb>		-> <type> + '@' + <name>
+<type> 		-> 'string'
+<type>	 	-> 'int'
+<type> 		-> 'bool'
+<type> 		-> 'nil'
+
+<label> 	-> <name>
+
+<name> 		-> term
+<typ> 		->
+
+0adrees_instr : [
+					CREATEFRAME/PUSHFRAME/POPFRAME/RETURN
+						/BREAK
+					]
+1adress_instr : [
+					DEFVAR/POPS 				<var>
+					PUSHS/EXIT/DPRINT/WRITE		<symb>
+					LABEL/CALL/JUMP				<label>
+					]
+
+2adress_instr :	[
+					MOVE/INT2CHAR/STRLEN/TYPE/NOT		<var> <symb>
+					READ								<var> <typ>
+					]
+
+3adress_instr : [
+					ADD/SUB/MUL/IDIV/LT/GT/EQ/AND/OR
+						/STR2INT/CONCAT/GETCHAR
+							/SETCHAR					<var> <symb> <symb>
+					JUMPIFEQ/JUMPIFNEQ					<label> <symb> <symb>
+					]

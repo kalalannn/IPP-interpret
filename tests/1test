@@ -1,0 +1,6 @@
+.IPPcode19
+createframe
+pushframe
+defvar GF@some
+move LF@ss GF@ned
+add GF@some int@10 int@20
