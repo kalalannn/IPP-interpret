@@ -15,3 +15,5 @@ echo "7"
 php7.3 /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/parse.php < /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/tests/7test
 echo "8"
 php7.3 /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/parse.php < /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/tests/8test
+echo "string test"
+php7.3 /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/parse.php < /home/kalalannn/3_roc/IPP/projekt/IPP-interpret/tests/string_test_ok

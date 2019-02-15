@@ -63,7 +63,7 @@ function var_attr($attr, $number){
 		(count($arg) != 2) || !(
 			in_array($arg[0], array('GF', 'TF', 'LF')) && 
 				is_label($arg[1]) == OK
-			)
+		)
 	)
 		return LEX_ERROR;
 	xml_attr($attr, $number, 'var');
@@ -88,6 +88,8 @@ function symb_attr($attr, $number){
 				return LEX_ERROR;
 			break;
 		case 'string':	// testovani v pythonu bude
+			if(preg_match("/([\\][0-9][0-9][0-9])*[^\\\# ]*/", $arg[1]) != 1) 	//is_int
+				return LEX_ERROR;
 			break;
 		default:
 			return var_attr($attr, $number);
@@ -95,6 +97,7 @@ function symb_attr($attr, $number){
 	xml_attr($arg[1], $number, $arg[0]);
 	return OK;
 }
+
 function label_attr($attr, $number){
 	if(is_label($attr) != OK)
 		return LEX_ERROR;
@@ -110,14 +113,15 @@ function is_label($attr){
 }
 
 function _main($argc, $argv){
-	global $xw;
-	xml_init();
 	if($argc == 2 && $argv[1] == '--help'){
 		return PAR_ERROR;
 	}
 	if(trim(fgets(STDIN)) != '.IPPcode19'){
 		return HEAD_ERROR;
 	}
+
+	global $xw;
+	xml_init();
 
 	$glob_array = array(
 				array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
@@ -188,5 +192,5 @@ function _main($argc, $argv){
 	echo xmlwriter_output_memory($xw);	//print
 	return OK;
 }
-return _main($argc, $argv);
+printf("MAIN: %d\n", _main($argc, $argv));
 ?>

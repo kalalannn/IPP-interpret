@@ -1,0 +1,10 @@
+.IPPcode19
+pushs string@\010
+pushs string@\010fsa
+pushs string@\010fsa\101
+pushs string@\010fsa\101219
+pushs string@\010121fsa\101219
+pushs string@fa
+pushs string@fa\101
+pushs string@fa\101fa
+pushs string@fa\101202\10
