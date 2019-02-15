@@ -135,7 +135,7 @@ function _main($argc, $argv){
 					'GT', 'EQ', 'AND', 'OR', 'STR2INT', 
 					'CONCAT', 'GETCHAR', 'SETCHAR'),
 				array('JUMPIFEQ', 'JUMPIFNEQ')
-				);
+	);
 
 	while($x = trim(strtoupper(strtok(fgets(STDIN), ' ')))){
 		for ($i=0; $i<count($glob_array); $i++){
