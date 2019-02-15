@@ -1,9 +1,9 @@
 <?php
 define('OK', 0);
 define('_EMPTY', 1);
+define('HEAD_ERROR', 21);
 define('ERR', 22); 	// SYNT + LEX ERRORS
 $instr_counter = 1; // Order
-$frames = array('GF', 'TF', 'LF');	//frames
 // Configuration
 $xw = xmlwriter_open_memory();
 xmlwriter_set_indent($xw, 1);
@@ -37,18 +37,17 @@ function next_attr(){
 		return _EMPTY;
 	return $x;
 }
-function var_xml($attr, $number){
+function attr_xml($attr, $number, $type){
 	global $xw;
 	xmlwriter_start_element($xw, 'arg'.$number);
 	xmlwriter_start_attribute($xw, 'type');
-	xmlwriter_text($xw, 'var');
+	xmlwriter_text($xw, $type);
 	xmlwriter_end_attribute($xw);
 
 	xmlwriter_start_attribute($xw, 'text');
 	xmlwriter_text($xw, $attr);
 	xmlwriter_end_attribute($xw);
 	xmlwriter_end_element($xw);
-
 }
 
 function var_attr($attr, $number){
@@ -56,22 +55,53 @@ function var_attr($attr, $number){
 		return 22;
 	if(is_var($attr) != OK)
 		return 22;
-	var_xml($attr, $number);
+	attr_xml($attr, $number, 'var');
 	return OK;
 }
 
+
 function is_var($attr){
-	global $frames;
 	$arg = explode('@', $attr);
 	if(count($arg) != 2)
 		return 22;
-	if(in_array($arg[0], $frames) && is_label($arg[1]) == OK)
+	if(in_array($arg[0], array('GF', 'TF', 'LF')) && is_label($arg[1]) == OK)
 		return OK;
 	else 
 		return 22;
 }
 
-function is_symb(){
+function is_symb($attr, $number){
+	$arg = explode('@', $attr);
+	if(count($arg) != 2)
+		return 22;
+	switch($arg[0]){
+		case 'int':
+			if(preg_match('/[0-9]*/', $arg[1]) != 1)
+				return 22;
+			attr_xml($arg[1], $number, $arg[0]);
+			break;
+		case 'bool':
+			if(!($arg[1] == 'true' || $arg[1] == 'false'))
+				return 22;
+			attr_xml($arg[1], $number, $arg[0]);
+			break;
+		case 'nil':
+			if($arg[1] != 'nil')
+				return 22;
+			attr_xml($arg[1], $number, $arg[0]);
+			break;
+		case 'string':	// testovani v pythonu bude
+			attr_xml($arg[1], $number, $arg[0]);
+			break;
+		default:
+			if(in_array($arg[0], array('GF', 'TF', 'LF')))
+				return var_attr($attr, $number);
+			else 
+				return 22;
+			break;
+				
+	}
+	return OK;
 }
 
 function is_label($attr){
@@ -81,7 +111,7 @@ function is_label($attr){
 	return OK;
 }
 
-/*define('HEAD_ERROR', 21);
+/*
 if($argc == 2 && $argv[1] == '--help'){
 	echo ("some");
 }
@@ -95,13 +125,14 @@ if(trim(fgets(STDIN)) != '.IPPcode19'){
 $glob_array = array(
 			array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
 				'RETURN', 'BREAK'),
-			array('DEFVAR', 'POPS'), //var
-			array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), //symb
-			array('LABEL', 'CALL', 'JUMP'), 	//label
+			array('DEFVAR', 'POPS'), 					//var
+			array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	//symb
+			array('LABEL', 'CALL', 'JUMP'), 			//label
 			array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
 			array('READ'),
 			array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 
-				'GT', 'EQ', 'AND', 'OR', 'STR2INT', 'CONCAT', 'GETCHAR', 'SETCHAR'),
+				'GT', 'EQ', 'AND', 'OR', 'STR2INT', 
+				'CONCAT', 'GETCHAR', 'SETCHAR'),
 			array('JUMPIFEQ', 'JUMPIFNEQ')
 			);
 
@@ -119,6 +150,8 @@ while($x = trim(strtoupper(strtok(fgets(STDIN), ' ')))){
 						return 22;
 					break;
 				case 2:
+					if(is_symb(trim(next_attr()), 1) != OK)
+						break;
 				case 3:
 				case 4:
 				case 5:

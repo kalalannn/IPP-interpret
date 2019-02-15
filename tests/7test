@@ -1,0 +1,5 @@
+.IPPcode19
+add GF@some int@10 int@10
+add GF@some LF@some int@10
+add GF@some int@10 LF@some
+add GF@some LF@some2 LF@some3
