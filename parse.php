@@ -103,6 +103,13 @@ function is_symb($attr, $number){
 	}
 	return OK;
 }
+function label_attr($attr, $number){
+	if(is_label($attr) != OK)
+		return 22;
+	attr_xml($attr, $number, 'label');
+	return OK;
+
+}
 
 function is_label($attr){
 	if(preg_match('/[a-zA-z\_\-\$\&\%\*\!\?][a-zA-z\_\-\$\&\%\*\!\?0-9]*/', 
@@ -153,6 +160,8 @@ while($x = trim(strtoupper(strtok(fgets(STDIN), ' ')))){
 					if(is_symb(trim(next_attr()), 1) != OK)
 						break;
 				case 3:
+					if(label_attr(trim(next_attr()), 1) != OK)
+						break;
 				case 4:
 				case 5:
 				case 6:
