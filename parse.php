@@ -105,6 +105,15 @@ function label_attr($attr, $number){
 	return OK;
 }
 
+function type_attr($attr, $number){
+	$arg = explode('@', $attr);
+	if(in_array($arg[0], array('int', 'string', 'bool')) && $arg[1] == ''){
+		xml_attr($arg[0], $number, 'type');
+		return OK;
+	}
+	return LEX_ERROR;
+}
+
 function is_label($attr){
 	if(preg_match('/[a-zA-z\_\-\$\&\%\*\!\?][a-zA-z\_\-\$\&\%\*\!\?0-9]*/', 
 		$attr) != 1)
@@ -164,6 +173,11 @@ function _main($argc, $argv){
 							return LEX_ERROR;
 						break;
 					case 5:
+						if(
+							var_attr(trim(next_attr()), 1) != OK  ||
+							type_attr(trim(next_attr()), 1) != OK
+						)
+							return LEX_ERROR;
 						break;
 					case 6:
 						if(
