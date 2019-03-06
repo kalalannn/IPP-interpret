@@ -10,7 +10,7 @@ function xml_init(){
 	global $xw ;
 	$xw = xmlwriter_open_memory();
 	xmlwriter_set_indent($xw, 1);
-	xmlwriter_set_indent_string($xw, ' ');
+	xmlwriter_set_indent_string($xw, '    ');
 	// Head
 	xmlwriter_start_document($xw, '1.0', 'UTF-8');
 	// Program
@@ -115,16 +115,21 @@ function type_attr($attr, $number){
 }
 
 function is_label($attr){
-	if(preg_match('/[a-zA-z\_\-\$\&\%\*\!\?][a-zA-z\_\-\$\&\%\*\!\?0-9]*/', 
+	if(preg_match('/[a-zA-z\_\-\$\&\%\*\!\?][a-zA-z\_\-\$\&\%\*\!\?0-9]+/', 
 		$attr) != 1)
 		return LEX_ERROR;
 	return OK;
 }
 
 function _main($argc, $argv){
-	if($argc == 2 && $argv[1] == '--help'){
+	if($argc == 2 && $argv[1] != '--help'){
 		return PAR_ERROR;
 	}
+	elseif($argc == 2 && $argv[1] == '--help'){
+		echo "help\n";
+		return OK;
+	}
+
 	if(trim(fgets(STDIN)) != '.IPPcode19'){
 		return HEAD_ERROR;
 	}
@@ -196,15 +201,25 @@ function _main($argc, $argv){
 							return LEX_ERROR;
 						break;
 				}
-				xmlwriter_end_element($xw);
+				if(next_attr() == "\n"){
+					xmlwriter_end_element($xw);
+					break;
+				}
+				else
+					return LEX_ERROR;
+			}
+			elseif(preg_match('/[#].*/', $x)){
+				while(next_attr() != "\n"){}
+			}
+			elseif($i == count($glob_array) - 1){
+				return LEX_ERROR;
 			}
 		}
 	}
-
 	xmlwriter_end_element($xw); 		//program
 	xmlwriter_end_document($xw);		//document
 	echo xmlwriter_output_memory($xw);	//print
 	return OK;
 }
-printf("MAIN: %d\n", _main($argc, $argv));
+exit (_main($argc, $argv));
 ?>
