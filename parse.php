@@ -1,7 +1,15 @@
 <?php
+/* ==========================================================
+ * Project: Interpretor IPPcode19
+ * File: parse.php
+ * Author: Nikolaj Vorobiev
+ * E-mail: xvorob00@stud.fit.vutbr.cz
+ * ==========================================================
+ */
+
 define('OK', 0);
-define('HEAD_ERROR', 21);	// Head error
 define('PAR_ERROR', 10);	// Parametr error
+define('HEAD_ERROR', 21);	// Head error
 define('LEX_ERROR', 22); 	// Lex + Synt error
 $instr_counter = 1; 		// Counter for order
 
@@ -76,7 +84,7 @@ function symb_attr($attr, $number){
 		return LEX_ERROR;
 	switch($arg[0]){
 		case 'int':
-			if(preg_match('/[0-9]*/', $arg[1]) != 1) 	//is_int
+			if(preg_match('/[0-9]*/', $arg[1]) != 1)//is_int
 				return LEX_ERROR;
 			break;
 		case 'bool':
@@ -87,7 +95,7 @@ function symb_attr($attr, $number){
 			if($arg[1] != 'nil')	//is_nil
 				return LEX_ERROR;
 			break;
-		case 'string':	// testovani v pythonu bude
+		case 'string':
 			if(preg_match("/([\\][0-9][0-9][0-9])*[^\\\# ]*/", $arg[1]) != 1) 	//is_int
 				return LEX_ERROR;
 			break;
@@ -107,9 +115,11 @@ function label_attr($attr, $number){
 
 function type_attr($attr, $number){
 	$arg = explode('@', $attr);
-	if(in_array($arg[0], array('int', 'string', 'bool')) && $arg[1] == ''){
-		xml_attr($arg[0], $number, 'type');
-		return OK;
+	if(
+		in_array($arg[0], array('int', 'string', 'bool')) &&
+	   	$arg[1] == ''){
+			xml_attr($arg[0], $number, 'type');
+			return OK;
 	}
 	return LEX_ERROR;
 }
