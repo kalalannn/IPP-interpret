@@ -1,6 +1,6 @@
 <?php
 /* ==========================================================
- * Project: Interpretor IPPcode19
+ * Project: Parser IPPcode19
  * File: parse.php
  * Author: Nikolaj Vorobiev
  * E-mail: xvorob00@stud.fit.vutbr.cz
@@ -13,6 +13,25 @@ define('HEAD_ERROR', 21);	// Head error
 define('LEX_ERROR', 22); 	// Lex + Synt error
 $instr_counter = 1; 		// Counter for order
 
+/*!
+ * @file
+ * Parser IPPcode19
+ * @author Nikolaj Vorobiev
+ * @email xvorob00@stud.fit.vutbr.cz
+ * @version 1.0
+ * @date 12.03.2019
+ * @copyright GNU GPL3
+ */
+
+/*! 
+ * @defgroup xml_group
+ * Functions for generating xml-output
+ * @{
+ */	
+
+/*!
+ * @brief XML Initialization
+ */
 function xml_init(){
 	// Configuration
 	global $xw ;
@@ -29,6 +48,10 @@ function xml_init(){
 	xmlwriter_end_attribute($xw);
 }
 
+/*!
+ * @brief XML instruction generator
+ * @param[in] instruction Instruction
+ */
 function xml_instr($instruction){
 	global $xw, $instr_counter;
 	// Instruction
@@ -43,6 +66,12 @@ function xml_instr($instruction){
 	xmlwriter_end_attribute($xw);
 }
 
+/*!
+ * @brief XML attribute generator
+ * @param[in] attr Attribute
+ * @param[in] number Number of attribute
+ * @param[in] type Type of attribute
+ */
 function xml_attr($attr, $number, $type){
 	global $xw;
 	// Argument
@@ -57,6 +86,29 @@ function xml_attr($attr, $number, $type){
 	xmlwriter_end_element($xw);
 }
 
+/*!
+ * @brief XML end document
+ */
+function xml_end(){
+	global $xw;
+	xmlwriter_end_element($xw); 		//program
+	xmlwriter_end_document($xw);		//document
+	echo xmlwriter_output_memory($xw);	//print
+}
+/*! @} */
+
+/*! 
+ * @defgroup attr_group
+ * Functions for checking attributes
+ * @{
+ */	
+
+/*!
+ * @brief Check and Generate <variable> attribute
+ * @param[in] attr Attribute
+ * @param[in] number Number of attribute 
+ * @return {ERR: if attr is not <var> else OK}
+ */
 function var_attr($attr, $number){
 	$arg = explode('@', $attr);
 	if((count($arg) != 2) || !(
@@ -68,6 +120,12 @@ function var_attr($attr, $number){
 	return OK;
 }
 
+/*!
+ * @brief Check and Generate <symbol> attribute
+ * @param[in] attr Attribute
+ * @param[in] number Number of attribute 
+ * @return {ERR: if attr is not <symb> else OK}
+ */
 function symb_attr($attr, $number){
 	$arg = explode('@', $attr);
 	if(count($arg) != 2)
@@ -96,6 +154,12 @@ function symb_attr($attr, $number){
 	return OK;
 }
 
+/*!
+ * @brief Check and Generate <label> attribute
+ * @param[in] attr Attribute
+ * @param[in] number Number of attribute 
+ * @return {ERR: if attr is not <label> else OK}
+ */
 function label_attr($attr, $number){
 	if(is_label($attr) != OK)
 		return LEX_ERROR;
@@ -103,6 +167,12 @@ function label_attr($attr, $number){
 	return OK;
 }
 
+/*!
+ * @brief Check and Generate <type> attribute
+ * @param[in] attr Attribute
+ * @param[in] number Number of attribute 
+ * @return {ERR: if attr is not <type> else OK}
+ */
 function type_attr($attr, $number){
 	if(in_array($attr, array('int', 'string', 'bool'))){
 		xml_attr($attr, $number, 'type');
@@ -111,6 +181,11 @@ function type_attr($attr, $number){
 	return LEX_ERROR;
 }
 
+/*!
+ * @brief Check if attr is <label>
+ * @param[in] attr Attribute
+ * @return {ERR: if attr is not <type> else OK}
+ */
 function is_label($attr){
 	if(preg_match('/^[a-zA-z\_\-\$\&\%\*\!\?][0-9a-zA-z\_\-\$\&\%\*\!\?]*$/', 
 		$attr) != 1)
@@ -118,38 +193,59 @@ function is_label($attr){
 	return OK;
 }
 
-function after_instr($tok){
-	if($tok == '' || preg_match("/^[ ]*[#].*$/", $tok))
+/*! 
+ * @brief Check attribute after instruction
+ * @param[in] attr Attribute
+ * @return {ERR: if attr is not '' or ' # <some_text>' else OK}
+ */
+function after_instr($attr){
+	if($attr == '' || preg_match("/^[ ]*[#].*$/", $attr))
 		return OK;
 	else 
 		return LEX_ERROR;
 }
 
-function _main($argc, $argv){
-	if($argc == 2 && $argv[1] != '--help'){
-		return PAR_ERROR;
-	}
-	elseif($argc == 2 && $argv[1] == '--help'){
-		echo ("****|=========================================|****\n".
-			  "    |   Help page for IPPcode19 parser part   |\n".
-			  "    |=========================================|\n".
-			  "    |                                         |\n".
-			  "    |Version: 1.0                             |\n".
-			  "    |Autor: Nikolaj Vorobiev                  |\n".
-			  "    |Email: xvorob00@stud.fit.vutbr.cz        |\n".
-			  "    |                                         |\n".
-			  "    |Usage:                                   |\n".
-			  "    |     php7.3 < <source code in IPPCode19> |\n".
-			  "    |=========================================|\n".
-			  ""
+/*! @} */
+
+/*! 
+ * @brief Print a help message
+ */
+function print_help(){
+	echo (
+			"****|=========================================|****\n".
+			"    |   Help page for IPPcode19 parser part   |\n".
+			"    |=========================================|\n".
+			"    |                                         |\n".
+			"    |Version: 1.0                             |\n".
+			"    |Autor: Nikolaj Vorobiev                  |\n".
+			"    |Email: xvorob00@stud.fit.vutbr.cz        |\n".
+			"    |                                         |\n".
+			"    |Usage:                                   |\n".
+			"    |     php7.3 < {source code in IPPCode19} |\n".
+			"    |     First Line: '.Ippcode19'            |\n".
+			"****|=========================================|****\n".
+			""
 		);
-		return OK;
-	}
+}
 
-	if(fgets(STDIN, 11) != '.IPPcode19'){
-		return HEAD_ERROR;
-	}
-
+/*! 
+ * @brief Main parse loop
+ * @details Function contains glob_array variable, that contains instructions sorted by attributes.
+ * @code{.php}
+ * $glob_array = array(
+ *     array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME', 'RETURN', 'BREAK'),
+ *     array('DEFVAR', 'POPS'), 					
+ *     array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	
+ *     array('LABEL', 'CALL', 'JUMP'), 			
+ *     array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
+ *     array('READ'),
+ *     array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 'GT', 'EQ', 'AND', 'OR', 'STR2INT', 'CONCAT', 'GETCHAR', 'SETCHAR'),
+ *     array('JUMPIFEQ', 'JUMPIFNEQ')
+ * );
+ * @endcode
+ * @details Also function contains parser's loop, where is going Lexical and Syntax analysis.
+ */
+function parse(){
 	global $xw;
 	xml_init();
 
@@ -175,12 +271,12 @@ function _main($argc, $argv){
 			continue;
 		}
 		else{
-			echo "line: '".$line."'\n";
+			//echo "line: '".$line."'\n";
 			$arr = preg_split('/\s+/', $line);
 			$arr[0] = strtoupper($arr[0]);
-			foreach($arr as $i){
+			/*foreach($arr as $i){
 				echo "tok: '".$i."'\n";
-			}
+			}*/
 			for ($i=0; $i<count($glob_array); $i++){
 				if (in_array($arr[0], $glob_array[$i])){
 					xml_instr($arr[0]);
@@ -258,11 +354,25 @@ function _main($argc, $argv){
 			}
 		}
 	}
-	xmlwriter_end_element($xw); 		//program
-	xmlwriter_end_document($xw);		//document
-	echo xmlwriter_output_memory($xw);	//print
+	xml_end();
 	return OK;
 }
+
+function _main($argc, $argv){
+	if($argc == 2 && $argv[1] != '--help'){
+		return PAR_ERROR;
+	}
+	elseif($argc == 2 && $argv[1] == '--help'){
+		print_help();
+		return OK;
+	}
+
+	if(fgets(STDIN, 11) != '.IPPcode19'){
+		return HEAD_ERROR;
+	}
+	return parse();
+}
+
 $code = _main($argc, $argv);
 if ($code != 0){
 	fprintf(STDERR, $code);

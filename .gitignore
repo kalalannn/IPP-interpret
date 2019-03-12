@@ -1,3 +1,7 @@
 .idea
 .idea/*
 *.sw*
+./doc/html/*
+./doc/html/search/*
+./doc/latex/*
+./Doxyfile
