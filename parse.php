@@ -52,28 +52,18 @@ function xml_attr($attr, $number, $type){
 	xmlwriter_text($xw, $type);
 	xmlwriter_end_attribute($xw);
 	// Text
-	xmlwriter_start_attribute($xw, 'text');
 	xmlwriter_text($xw, $attr);
-	xmlwriter_end_attribute($xw);
-	xmlwriter_end_element($xw);
-}
 
-function next_attr(){
-	$x = strtok(' ');
-	if($x == '')
-		return OK;
-	return $x;
+	xmlwriter_end_element($xw);
 }
 
 function var_attr($attr, $number){
 	$arg = explode('@', $attr);
-	if(
-		(count($arg) != 2) || !(
+	if((count($arg) != 2) || !(
 			in_array($arg[0], array('GF', 'TF', 'LF')) && 
-				is_label($arg[1]) == OK
-		)
-	)
+				is_label($arg[1]) == OK)){
 		return LEX_ERROR;
+	}
 	xml_attr($attr, $number, 'var');
 	return OK;
 }
@@ -84,7 +74,7 @@ function symb_attr($attr, $number){
 		return LEX_ERROR;
 	switch($arg[0]){
 		case 'int':
-			if(preg_match('/[0-9]*/', $arg[1]) != 1)//is_int
+			if(preg_match('/^[0-9]*$/', $arg[1]) != 1)//is_int
 				return LEX_ERROR;
 			break;
 		case 'bool':
@@ -96,7 +86,7 @@ function symb_attr($attr, $number){
 				return LEX_ERROR;
 			break;
 		case 'string':
-			if(preg_match("/([\\][0-9][0-9][0-9])*[^\\\# ]*/", $arg[1]) != 1) 	//is_int
+			if(preg_match("/^([\\\\]\d{3}|[^\\\\\#\s])*$/", $arg[1]) != 1) 	//is_int
 				return LEX_ERROR;
 			break;
 		default:
@@ -114,21 +104,25 @@ function label_attr($attr, $number){
 }
 
 function type_attr($attr, $number){
-	$arg = explode('@', $attr);
-	if(
-		in_array($arg[0], array('int', 'string', 'bool')) &&
-	   	$arg[1] == ''){
-			xml_attr($arg[0], $number, 'type');
-			return OK;
+	if(in_array($attr, array('int', 'string', 'bool'))){
+		xml_attr($attr, $number, 'type');
+		return OK;
 	}
 	return LEX_ERROR;
 }
 
 function is_label($attr){
-	if(preg_match('/[a-zA-z\_\-\$\&\%\*\!\?][a-zA-z\_\-\$\&\%\*\!\?0-9]+/', 
+	if(preg_match('/^[a-zA-z\_\-\$\&\%\*\!\?][0-9a-zA-z\_\-\$\&\%\*\!\?]*$/', 
 		$attr) != 1)
 		return LEX_ERROR;
 	return OK;
+}
+
+function after_instr($tok){
+	if($tok == '' || preg_match("/^[ ]*[#].*$/", $tok))
+		return OK;
+	else 
+		return LEX_ERROR;
 }
 
 function _main($argc, $argv){
@@ -136,11 +130,23 @@ function _main($argc, $argv){
 		return PAR_ERROR;
 	}
 	elseif($argc == 2 && $argv[1] == '--help'){
-		echo "help\n";
+		echo ("****|=========================================|****\n".
+			  "    |   Help page for IPPcode19 parser part   |\n".
+			  "    |=========================================|\n".
+			  "    |                                         |\n".
+			  "    |Version: 1.0                             |\n".
+			  "    |Autor: Nikolaj Vorobiev                  |\n".
+			  "    |Email: xvorob00@stud.fit.vutbr.cz        |\n".
+			  "    |                                         |\n".
+			  "    |Usage:                                   |\n".
+			  "    |     php7.3 < <source code in IPPCode19> |\n".
+			  "    |=========================================|\n".
+			  ""
+		);
 		return OK;
 	}
 
-	if(trim(fgets(STDIN)) != '.IPPcode19'){
+	if(fgets(STDIN, 11) != '.IPPcode19'){
 		return HEAD_ERROR;
 	}
 
@@ -161,68 +167,94 @@ function _main($argc, $argv){
 				array('JUMPIFEQ', 'JUMPIFNEQ')
 	);
 
-	while($x = trim(strtoupper(strtok(fgets(STDIN), ' ')))){
-		for ($i=0; $i<count($glob_array); $i++){
-			if (in_array($x, $glob_array[$i])){
-				xml_instr($x);
-				switch ($i){
-					case 0:
-						break;
-					case 1:
-						if(var_attr(trim(next_attr()), 1) != OK)
-							return LEX_ERROR;
-						break;
-					case 2:
-						if(symb_attr(trim(next_attr()), 1) != OK)
-							return LEX_ERROR;
-						break;
-					case 3:
-						if(label_attr(trim(next_attr()), 1) != OK)
-							return LEX_ERROR;
-						break;
-					case 4:
-						if(	
-							var_attr(trim(next_attr()), 1) != OK ||
-							symb_attr(trim(next_attr()), 2) != OK
-						)
-							return LEX_ERROR;
-						break;
-					case 5:
-						if(
-							var_attr(trim(next_attr()), 1) != OK  ||
-							type_attr(trim(next_attr()), 1) != OK
-						)
-							return LEX_ERROR;
-						break;
-					case 6:
-						if(
-							var_attr(trim(next_attr()), 1) != OK  ||
-							symb_attr(trim(next_attr()), 2) != OK ||
-							symb_attr(trim(next_attr()), 3) != OK 
-						)
-							return LEX_ERROR;
-						break;
-					case 7:
-						if(
-							label_attr(trim(next_attr()), 1) != OK ||
-							symb_attr(trim(next_attr()), 2) != OK  ||
-							symb_attr(trim(next_attr()), 3) != OK
-						)
-							return LEX_ERROR;
-						break;
-				}
-				if(next_attr() == "\n"){
+	while($line = fgets(STDIN)){
+		if($line == "\n"){
+			continue;
+		}
+		elseif(preg_match("/^[ ]*[#].*$/", $line)){
+			continue;
+		}
+		else{
+			echo "line: '".$line."'\n";
+			$arr = preg_split('/\s+/', $line);
+			$arr[0] = strtoupper($arr[0]);
+			foreach($arr as $i){
+				echo "tok: '".$i."'\n";
+			}
+			for ($i=0; $i<count($glob_array); $i++){
+				if (in_array($arr[0], $glob_array[$i])){
+					xml_instr($arr[0]);
+					switch ($i){
+						case 0:
+							if (after_instr($arr[1])){
+								return LEX_ERROR;
+							}
+							break;
+						case 1:
+							if(var_attr($arr[1], 1) != OK ||
+								after_instr($arr[2]) != OK
+							){
+								return LEX_ERROR;
+							}
+							break;
+						case 2:
+							if(symb_attr($arr[1], 1) != OK ||
+								after_instr($arr[2]) != OK
+							){
+								return LEX_ERROR;
+							}
+							break;
+						case 3:
+							if(label_attr($arr[1], 1) != OK ||
+								after_instr($arr[2]) != OK
+							){
+								return LEX_ERROR;
+							}
+							break;
+						case 4:
+							if(	
+								var_attr($arr[1], 1) != OK ||
+								symb_attr($arr[2], 2) != OK ||
+								after_instr($arr[3]) != OK
+							)
+								return LEX_ERROR;
+							break;
+						case 5:
+							if(
+								var_attr($arr[1], 1) != OK  ||
+								type_attr($arr[2], 2) != OK ||
+								after_instr($arr[3]) != OK
+							)
+								return LEX_ERROR;
+							break;
+						case 6:
+							if(
+								var_attr($arr[1], 1) != OK  ||
+								symb_attr($arr[2], 2) != OK ||
+								symb_attr($arr[3], 3) != OK ||
+								after_instr($arr[4]) != OK
+							)
+								return LEX_ERROR;
+							break;
+						case 7:
+							if(
+								label_attr($arr[1], 1) != OK ||
+								symb_attr($arr[2], 2) != OK  ||
+								symb_attr($arr[3], 3) != OK  ||
+								after_instr($arr[4]) != OK
+							)
+								return LEX_ERROR;
+							break;
+					}
 					xmlwriter_end_element($xw);
 					break;
 				}
-				else
+				elseif($i == count($glob_array) - 1){
 					return LEX_ERROR;
-			}
-			elseif(preg_match('/[#].*/', $x)){
-				while(next_attr() != "\n"){}
-			}
-			elseif($i == count($glob_array) - 1){
-				return LEX_ERROR;
+				}
+				else {
+					continue;
+				}
 			}
 		}
 	}
@@ -231,5 +263,10 @@ function _main($argc, $argv){
 	echo xmlwriter_output_memory($xw);	//print
 	return OK;
 }
-exit (_main($argc, $argv));
+$code = _main($argc, $argv);
+if ($code != 0){
+	fprintf(STDERR, $code);
+	echo "\n";
+}
+exit($code);
 ?>
