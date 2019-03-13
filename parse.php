@@ -262,10 +262,12 @@ function parse(){
 	);
 
 	while($line = fgets(STDIN)){
-		if($line == "\n"){
-			continue;
+		$x = explode('#', $line);
+		if(count($x) > 1){
+			$line = $x[0]."\n";
 		}
-		elseif(preg_match("/^[ ]*[#].*$/", $line)){
+
+		if(preg_match('/^\s+$/', $line) || $line == ''){
 			continue;
 		}
 		else{
