@@ -20,7 +20,7 @@ Parse source code in IPPcode19 and transfer it into xml-output.
 ## Regular expresions
   - string: `/^([\\\\]\d{3}|[^\\\\\#\s])*$/`
   - label: `/^[a-zA-z\_\-\$\&\%\*\!\?][0-9a-zA-z\_\-\$\&\%\*\!\?]*$/`
-  - comments `/^[ ]*[#].*$/`
+  - comments: `/^[ ]*[#].*$/`
   
 ## Instructions are sorted by operands like that:
   0. {CREATEFRAME, PUSHFRAME, POPFRAME, RETURN, BREAK}
