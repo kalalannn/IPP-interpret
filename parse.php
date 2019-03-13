@@ -1,36 +1,35 @@
 <?php
-/* ==========================================================
- * Project: Parser IPPcode19
- * File: parse.php
- * Author: Nikolaj Vorobiev
- * E-mail: xvorob00@stud.fit.vutbr.cz
- * ==========================================================
- */
-
-define('OK', 0);
-define('PAR_ERROR', 10);	// Parametr error
-define('HEAD_ERROR', 21);	// Head error
-define('LEX_ERROR', 22); 	// Lex + Synt error
-$instr_counter = 1; 		// Counter for order
-
-/*!
+/*! 
  * @file
- * Parser IPPcode19
+ * @brief Interpet IPPcode19 : Parser
  * @author Nikolaj Vorobiev
- * @email xvorob00@stud.fit.vutbr.cz
  * @version 1.0
  * @date 12.03.2019
  * @copyright GNU GPL3
  */
 
+define('OK', 0);
+
+/*! @brief PAR_ERROR --help parametr error. */
+define('PAR_ERROR', 10);
+
+/*! @brief PAR_ERROR '.IPPcode' head error. */
+define('HEAD_ERROR', 21);
+
+/*! @brief ERROR Lexical and Syntax errors. */
+define('ERROR', 22);
+
+/*! @brief Global variable $instr_counter, that counts instructions. */
+$instr_counter = 1;
+
 /*! 
  * @defgroup xml_group
- * Functions for generating xml-output
+ * @brief Functions for generating xml-output
  * @{
  */	
 
 /*!
- * @brief XML Initialization
+ * @brief Creates xml document and start program.
  */
 function xml_init(){
 	// Configuration
@@ -50,7 +49,7 @@ function xml_init(){
 
 /*!
  * @brief XML instruction generator
- * @param[in] instruction Instruction
+ * @param[in] $instruction Instruction
  */
 function xml_instr($instruction){
 	global $xw, $instr_counter;
@@ -68,9 +67,9 @@ function xml_instr($instruction){
 
 /*!
  * @brief XML attribute generator
- * @param[in] attr Attribute
- * @param[in] number Number of attribute
- * @param[in] type Type of attribute
+ * @param[in] $attr Attribute
+ * @param[in] $number Number of attribute
+ * @param[in] $type Type of attribute
  */
 function xml_attr($attr, $number, $type){
 	global $xw;
@@ -87,7 +86,7 @@ function xml_attr($attr, $number, $type){
 }
 
 /*!
- * @brief XML end document
+ * @brief Ends program and xml document
  */
 function xml_end(){
 	global $xw;
@@ -99,53 +98,53 @@ function xml_end(){
 
 /*! 
  * @defgroup attr_group
- * Functions for checking attributes
+ * @brief Functions for checking attributes
  * @{
  */	
 
 /*!
- * @brief Check and Generate <variable> attribute
- * @param[in] attr Attribute
- * @param[in] number Number of attribute 
- * @return {ERR: if attr is not <var> else OK}
+ * @brief Check and Generate {variable} attribute
+ * @param[in] $attr Attribute
+ * @param[in] $number Number of attribute 
+ * @return ERROR: if attr is not {var} else OK
  */
 function var_attr($attr, $number){
 	$arg = explode('@', $attr);
 	if((count($arg) != 2) || !(
 			in_array($arg[0], array('GF', 'TF', 'LF')) && 
 				is_label($arg[1]) == OK)){
-		return LEX_ERROR;
+		return ERROR;
 	}
 	xml_attr($attr, $number, 'var');
 	return OK;
 }
 
 /*!
- * @brief Check and Generate <symbol> attribute
- * @param[in] attr Attribute
- * @param[in] number Number of attribute 
- * @return {ERR: if attr is not <symb> else OK}
+ * @brief Check and Generate {symbol} attribute
+ * @param[in] $attr Attribute
+ * @param[in] $number Number of attribute 
+ * @return ERROR: if attr is not {symb} else OK
  */
 function symb_attr($attr, $number){
 	$arg = explode('@', $attr);
 	if(count($arg) != 2)
-		return LEX_ERROR;
+		return ERROR;
 	switch($arg[0]){
 		case 'int':
 			if(preg_match('/^[0-9]*$/', $arg[1]) != 1)//is_int
-				return LEX_ERROR;
+				return ERROR;
 			break;
 		case 'bool':
 			if(!($arg[1] == 'true' || $arg[1] == 'false')) //is_bool
-				return LEX_ERROR;
+				return ERROR;
 			break;
 		case 'nil':
 			if($arg[1] != 'nil')	//is_nil
-				return LEX_ERROR;
+				return ERROR;
 			break;
 		case 'string':
 			if(preg_match("/^([\\\\]\d{3}|[^\\\\\#\s])*$/", $arg[1]) != 1) 	//is_int
-				return LEX_ERROR;
+				return ERROR;
 			break;
 		default:
 			return var_attr($attr, $number);
@@ -155,56 +154,55 @@ function symb_attr($attr, $number){
 }
 
 /*!
- * @brief Check and Generate <label> attribute
- * @param[in] attr Attribute
- * @param[in] number Number of attribute 
- * @return {ERR: if attr is not <label> else OK}
+ * @brief Check and Generate {label} attribute
+ * @param[in] $attr Attribute
+ * @param[in] $number Number of attribute 
+ * @return ERROR: if attr is not {label} else OK
  */
 function label_attr($attr, $number){
 	if(is_label($attr) != OK)
-		return LEX_ERROR;
+		return ERROR;
 	xml_attr($attr, $number, 'label');
 	return OK;
 }
 
 /*!
- * @brief Check and Generate <type> attribute
- * @param[in] attr Attribute
- * @param[in] number Number of attribute 
- * @return {ERR: if attr is not <type> else OK}
+ * @brief Check and Generate {type} attribute
+ * @param[in] $attr Attribute
+ * @param[in] $number Number of attribute 
+ * @return {ERROR: if attr is not {type} else OK}
  */
 function type_attr($attr, $number){
 	if(in_array($attr, array('int', 'string', 'bool'))){
 		xml_attr($attr, $number, 'type');
 		return OK;
 	}
-	return LEX_ERROR;
+	return ERROR;
 }
 
 /*!
- * @brief Check if attr is <label>
- * @param[in] attr Attribute
- * @return {ERR: if attr is not <type> else OK}
+ * @brief Check if attr is {label}
+ * @param[in] $attr Attribute
+ * @return ERROR: if attr is not {label} else OK
  */
 function is_label($attr){
 	if(preg_match('/^[a-zA-z\_\-\$\&\%\*\!\?][0-9a-zA-z\_\-\$\&\%\*\!\?]*$/', 
 		$attr) != 1)
-		return LEX_ERROR;
+		return ERROR;
 	return OK;
 }
 
 /*! 
  * @brief Check attribute after instruction
- * @param[in] attr Attribute
- * @return {ERR: if attr is not '' or ' # <some_text>' else OK}
+ * @param[in] $attr Attribute
+ * @return ERROR: if attr is not '' or ' # {some_text}' else OK
  */
 function after_instr($attr){
 	if($attr == '' || preg_match("/^[ ]*[#].*$/", $attr))
 		return OK;
 	else 
-		return LEX_ERROR;
+		return ERROR;
 }
-
 /*! @} */
 
 /*! 
@@ -235,7 +233,7 @@ function print_help(){
  * $glob_array = array(
  *     array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME', 'RETURN', 'BREAK'),
  *     array('DEFVAR', 'POPS'), 					
- *     array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	
+ *     array('PUSHS', 'EXIT', 'PRINT', 'WRITE'), 	
  *     array('LABEL', 'CALL', 'JUMP'), 			
  *     array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
  *     array('READ'),
@@ -252,9 +250,9 @@ function parse(){
 	$glob_array = array(
 				array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
 					'RETURN', 'BREAK'),
-				array('DEFVAR', 'POPS'), 					//var
-				array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	//symb
-				array('LABEL', 'CALL', 'JUMP'), 			//label
+				array('DEFVAR', 'POPS'), 					
+				array('PUSHS', 'EXIT', 'PRINT', 'WRITE'), 	
+				array('LABEL', 'CALL', 'JUMP'), 			
 				array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
 				array('READ'),
 				array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 
@@ -283,28 +281,28 @@ function parse(){
 					switch ($i){
 						case 0:
 							if (after_instr($arr[1])){
-								return LEX_ERROR;
+								return ERROR;
 							}
 							break;
 						case 1:
 							if(var_attr($arr[1], 1) != OK ||
 								after_instr($arr[2]) != OK
 							){
-								return LEX_ERROR;
+								return ERROR;
 							}
 							break;
 						case 2:
 							if(symb_attr($arr[1], 1) != OK ||
 								after_instr($arr[2]) != OK
 							){
-								return LEX_ERROR;
+								return ERROR;
 							}
 							break;
 						case 3:
 							if(label_attr($arr[1], 1) != OK ||
 								after_instr($arr[2]) != OK
 							){
-								return LEX_ERROR;
+								return ERROR;
 							}
 							break;
 						case 4:
@@ -313,7 +311,7 @@ function parse(){
 								symb_attr($arr[2], 2) != OK ||
 								after_instr($arr[3]) != OK
 							)
-								return LEX_ERROR;
+								return ERROR;
 							break;
 						case 5:
 							if(
@@ -321,7 +319,7 @@ function parse(){
 								type_attr($arr[2], 2) != OK ||
 								after_instr($arr[3]) != OK
 							)
-								return LEX_ERROR;
+								return ERROR;
 							break;
 						case 6:
 							if(
@@ -330,7 +328,7 @@ function parse(){
 								symb_attr($arr[3], 3) != OK ||
 								after_instr($arr[4]) != OK
 							)
-								return LEX_ERROR;
+								return ERROR;
 							break;
 						case 7:
 							if(
@@ -339,14 +337,14 @@ function parse(){
 								symb_attr($arr[3], 3) != OK  ||
 								after_instr($arr[4]) != OK
 							)
-								return LEX_ERROR;
+								return ERROR;
 							break;
 					}
 					xmlwriter_end_element($xw);
 					break;
 				}
 				elseif($i == count($glob_array) - 1){
-					return LEX_ERROR;
+					return ERROR;
 				}
 				else {
 					continue;
@@ -358,6 +356,10 @@ function parse(){
 	return OK;
 }
 
+/*! 
+ * @brief Main function of the program 
+ * @details Enable parameters of main: --help
+*/
 function _main($argc, $argv){
 	if($argc == 2 && $argv[1] != '--help'){
 		return PAR_ERROR;
@@ -373,6 +375,7 @@ function _main($argc, $argv){
 	return parse();
 }
 
+/*! @brief Variable contains exit code of _main. */
 $code = _main($argc, $argv);
 if ($code != 0){
 	fprintf(STDERR, $code);
