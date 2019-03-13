@@ -1,15 +1,16 @@
-Documentation of IPP 2018/2019, 1 task 
-======================================
-### Author: Nikolaj Vorobiev
-### Login: xvorob00
---------------------------------------
-## Parser of IPP2019Code: 
-    - parse.php
+# Documentation of IPP 2018/2019, 1 task 
+* Author: Nikolaj Vorobiev
+* Login: xvorob00
+* Version: 1.0
+* Licence GNU GPL3
+
+`parse.php` Parse source code in IPPcode19 and transfer it into xml-output.
+
 ## Usage: 
-  - php7.3 parse.php --help
-  - php7.3 parse.php < {IPPcode19.src}
-## How does it works?
-  Parse source code in IPPcode19 and transfer it into xml-output.
+```bash
+  php7.3 parse.php --help
+  php7.3 parse.php < {IPPcode19.src}
+```
 ## Instructions are sorted by operands like that:
   + {CREATEFRAME, PUSHFRAME, POPFRAME, RETURN, BREAK}
   + {DEFVAR, POPS} {var}
