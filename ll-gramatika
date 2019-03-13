@@ -29,18 +29,16 @@
 					]
 1adress_instr : [
 					DEFVAR/POPS 				<var>
-					PUSHS/EXIT/DPRINT/WRITE		<symb>
+					PUSHS/EXIT/PRINT/WRITE		<symb>
 					LABEL/CALL/JUMP				<label>
 					]
 
 2adress_instr :	[
-					MOVE/INT2CHAR/STRLEN/TYPE/NOT		<var> <symb>
-					READ								<var> <typ>
+					{MOVE, INT2CHAR, STRLEN, TYPE, NOT} {var} {symb}
+					READ {var} {typ}
 					]
 
 3adress_instr : [
-					ADD/SUB/MUL/IDIV/LT/GT/EQ/AND/OR
-						/STR2INT/CONCAT/GETCHAR
-							/SETCHAR					<var> <symb> <symb>
-					JUMPIFEQ/JUMPIFNEQ					<label> <symb> <symb>
+					{ADD, SUB, MUL, IDIV, LT, GT, EQ, AND, OR, STR2INT, CONCAT, GETCHAR, SETCHAR} {var} {symb} {symb}
+					{JUMPIFEQ, JUMPIFNEQ} {label} {symb} {symb}
 					]
