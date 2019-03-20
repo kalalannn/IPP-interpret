@@ -233,7 +233,7 @@ function print_help(){
  * $glob_array = array(
  *     array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME', 'RETURN', 'BREAK'),
  *     array('DEFVAR', 'POPS'), 					
- *     array('PUSHS', 'EXIT', 'PRINT', 'WRITE'), 	
+ *     array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	
  *     array('LABEL', 'CALL', 'JUMP'), 			
  *     array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
  *     array('READ'),
@@ -251,7 +251,7 @@ function parse(){
 				array('CREATEFRAME', 'PUSHFRAME', 'POPFRAME',
 					'RETURN', 'BREAK'),
 				array('DEFVAR', 'POPS'), 					
-				array('PUSHS', 'EXIT', 'PRINT', 'WRITE'), 	
+				array('PUSHS', 'EXIT', 'DPRINT', 'WRITE'), 	
 				array('LABEL', 'CALL', 'JUMP'), 			
 				array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
 				array('READ'),

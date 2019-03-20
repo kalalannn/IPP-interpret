@@ -25,7 +25,7 @@ Parse source code in IPPcode19 and transfer it into xml-output.
 ## Instructions are sorted by operands like that:
   0. {CREATEFRAME, PUSHFRAME, POPFRAME, RETURN, BREAK}
   1. {DEFVAR, POPS} {var}
-  2. {PUSHS, EXIT, PRINT, WRITE} {symb}
+  2. {PUSHS, EXIT, DPRINT, WRITE} {symb}
   3. {LABEL, CALL, JUMP} {label}
   4. {MOVE, INT2CHAR, STRLEN, TYPE, NOT} {var} {symb}
   5. {READ} {var} {typ}
