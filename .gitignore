@@ -5,3 +5,5 @@
 ./doc/html/search/*
 ./doc/latex/*
 ./Doxyfile
+./tests/*
+./tests/

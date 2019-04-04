@@ -1,6 +1,0 @@
-.IPPcode19
-pushs LF@some
-pushs int@10
-pushs string@\010kkf\010fafa\032
-pushs bool@true
-pushs nil@nil

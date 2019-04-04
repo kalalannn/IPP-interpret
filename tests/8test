@@ -1,5 +1,0 @@
-.IPPcode19
-jumpifeq some_label int@10 int@10
-jumpifeq some_label GF@some int@10
-jumpifeq some_label int@10 GF@some 
-jumpifeq some_label GF@some2 GF@some 

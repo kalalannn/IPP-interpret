@@ -16,8 +16,10 @@ define('PAR_ERROR', 10);
 /*! @brief PAR_ERROR '.IPPcode' head error. */
 define('HEAD_ERROR', 21);
 
+define('OPCODE_ERROR', 22);
+
 /*! @brief ERROR Lexical and Syntax errors. */
-define('ERROR', 22);
+define('ERROR', 23);
 
 /*! @brief Global variable $instr_counter, that counts instructions. */
 $instr_counter = 1;
@@ -210,18 +212,18 @@ function after_instr($attr){
  */
 function print_help(){
 	echo (
-			"****|=========================================|****\n".
-			"    |   Help page for IPPcode19 parser part   |\n".
-			"    |=========================================|\n".
-			"    |                                         |\n".
-			"    |Version: 1.0                             |\n".
-			"    |Autor: Nikolaj Vorobiev                  |\n".
-			"    |Email: xvorob00@stud.fit.vutbr.cz        |\n".
-			"    |                                         |\n".
-			"    |Usage:                                   |\n".
-			"    |     php7.3 < {source code in IPPCode19} |\n".
-			"    |     First Line: '.Ippcode19'            |\n".
-			"****|=========================================|****\n".
+			"****|===================================================|****\n".
+			"    |      Help page for IPPcode19 parser part          |\n".
+			"    |===================================================|\n".
+			"    |                                                   |\n".
+			"    |Version: 1.0                                       |\n".
+			"    |Autor: Nikolaj Vorobiev                            |\n".
+			"    |Email: xvorob00@stud.fit.vutbr.cz                  |\n".
+			"    |                                                   |\n".
+			"    |Usage:                                             |\n".
+			"    |     php7.3 parse.php < {source code in IPPCode19} |\n".
+			"    |     First Line: '.IPPcode19'                      |\n".
+			"****|===================================================|****\n".
 			""
 		);
 }
@@ -256,7 +258,7 @@ function parse(){
 				array('MOVE', 'INT2CHAR', 'STRLEN', 'TYPE', 'NOT'),
 				array('READ'),
 				array('ADD', 'SUB', 'MUL', 'IDIV', 'LT', 
-					'GT', 'EQ', 'AND', 'OR', 'STR2INT', 
+					'GT', 'EQ', 'AND', 'OR', 'STRI2INT', 
 					'CONCAT', 'GETCHAR', 'SETCHAR'),
 				array('JUMPIFEQ', 'JUMPIFNEQ')
 	);
@@ -346,7 +348,7 @@ function parse(){
 					break;
 				}
 				elseif($i == count($glob_array) - 1){
-					return ERROR;
+					return OPCODE_ERROR;
 				}
 				else {
 					continue;
@@ -371,7 +373,7 @@ function _main($argc, $argv){
 		return OK;
 	}
 
-	if(fgets(STDIN, 11) != '.IPPcode19'){
+	if(strtolower(fgets(STDIN, 11)) != '.ippcode19'){
 		return HEAD_ERROR;
 	}
 	return parse();
