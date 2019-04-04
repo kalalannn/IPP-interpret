@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>test.php output</title>
+  </head>
+  <body>
+    <h1>Tests result</h1>
+<hr>    <h2>Test 1</h2>
+    <h3>./some.src</h3>
+    <pre>.ippcode19
+
+# write test
+write int@10
+write string@some
+write bool@true
+write GF@so
+
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;int&quot;&gt;10&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;some&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;bool&quot;&gt;true&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./some.out</h3>
+    <pre lang="xml"></pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./some.rc</h3>
+    <pre>0</pre>
+    <h3>./some.in</h3>
+    <pre></pre>
+    <hr>
+
+  </body>
+</html>

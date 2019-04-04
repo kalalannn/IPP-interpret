@@ -1,0 +1,8 @@
+.ippcode19
+
+# write test
+write int@10
+write string@some
+write bool@true
+write GF@so
+

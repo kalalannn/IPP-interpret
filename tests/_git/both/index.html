@@ -1,0 +1,757 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>test.php output</title>
+  </head>
+  <body>
+    <h1>Tests result</h1>
+<hr>    <h2>Test 1</h2>
+    <h3>./error_string_out_of_range.src</h3>
+    <pre>.IPPcode19
+DEFVAR GF@a
+# indexace mimo meze
+GETCHAR GF@a string@a int@10
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@a&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;GETCHAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@a&lt;/arg1&gt;
+        &lt;arg2 type=&quot;string&quot;&gt;a&lt;/arg2&gt;
+        &lt;arg3 type=&quot;int&quot;&gt;10&lt;/arg3&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./error_string_out_of_range.out</h3>
+    <pre lang="xml"></pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./error_string_out_of_range.rc</h3>
+    <pre>58</pre>
+    <h3>./error_string_out_of_range.in</h3>
+    <pre></pre>
+    <hr>
+    <h2>Test 2</h2>
+    <h3>./kalkulacka.src</h3>
+    <pre>.IPPcode19
+DEFVAR GF@operace
+DEFVAR GF@op1
+DEFVAR GF@op2
+DEFVAR GF@type
+LABEL start
+WRITE string@Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:
+READ GF@operace string
+JUMPIFEQ konec GF@operace string@e
+#switch
+WRITE string@Zadejte\032č&iacute;slo\0321:\010
+READ GF@op1 int
+WRITE string@Zadejte\032č&iacute;slo\0322:\010
+READ GF@op2 int
+JUMPIFEQ plus GF@operace string@+
+JUMPIFEQ minus GF@operace string@-
+JUMPIFEQ krat GF@operace string@*
+JUMPIFEQ deleno GF@operace string@/
+JUMP error
+LABEL plus
+ADD GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL minus
+SUB GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL krat
+MUL GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL deleno
+IDIV GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL error
+WRITE string@Spatny\032vstupni\032typ!\010
+LABEL konec
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@type&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;6&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;7&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;string&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;8&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;e&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;9&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0321:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;10&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;11&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0322:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;12&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;13&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;+&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;14&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;-&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;15&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;*&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;16&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;/&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;17&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;18&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;19&quot; opcode=&quot;ADD&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;20&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;21&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;22&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;23&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;24&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;25&quot; opcode=&quot;SUB&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;26&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;27&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;28&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;29&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;30&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;31&quot; opcode=&quot;MUL&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;32&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;33&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;34&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;35&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;36&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;37&quot; opcode=&quot;IDIV&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;38&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;39&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;40&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;41&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;42&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;43&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Spatny\032vstupni\032typ!\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;44&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./kalkulacka.out</h3>
+    <pre lang="xml">Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:Zadejte č&iacute;slo 1:
+Zadejte č&iacute;slo 2:
+V&aacute;&scaron; v&yacute;sledek: 34
+Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:</pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./kalkulacka.rc</h3>
+    <pre>0</pre>
+    <h3>./kalkulacka.in</h3>
+    <pre>+
+23
+11
+e
+</pre>
+    <hr>
+    <h2>Test 3</h2>
+    <h3>./kalkulacka_deleni_nulou.src</h3>
+    <pre>.IPPcode19
+DEFVAR GF@operace
+DEFVAR GF@op1
+DEFVAR GF@op2
+DEFVAR GF@type
+LABEL start
+WRITE string@Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:
+READ GF@operace string
+JUMPIFEQ konec GF@operace string@e
+#switch
+WRITE string@Zadejte\032č&iacute;slo\0321:\010
+READ GF@op1 int
+WRITE string@Zadejte\032č&iacute;slo\0322:\010
+READ GF@op2 int
+JUMPIFEQ plus GF@operace string@+
+JUMPIFEQ minus GF@operace string@-
+JUMPIFEQ krat GF@operace string@*
+JUMPIFEQ deleno GF@operace string@/
+JUMP error
+LABEL plus
+ADD GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL minus
+SUB GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL krat
+MUL GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL deleno
+IDIV GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL error
+WRITE string@Spatny\032vstupni\032typ!\010
+LABEL konec
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@type&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;6&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;7&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;string&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;8&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;e&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;9&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0321:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;10&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;11&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0322:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;12&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;13&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;+&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;14&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;-&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;15&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;*&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;16&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;/&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;17&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;18&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;19&quot; opcode=&quot;ADD&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;20&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;21&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;22&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;23&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;24&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;25&quot; opcode=&quot;SUB&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;26&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;27&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;28&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;29&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;30&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;31&quot; opcode=&quot;MUL&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;32&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;33&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;34&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;35&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;36&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;37&quot; opcode=&quot;IDIV&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;38&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;39&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;40&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;41&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;42&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;43&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Spatny\032vstupni\032typ!\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;44&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./kalkulacka_deleni_nulou.out</h3>
+    <pre lang="xml"></pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./kalkulacka_deleni_nulou.rc</h3>
+    <pre>57
+</pre>
+    <h3>./kalkulacka_deleni_nulou.in</h3>
+    <pre>/
+123
+0
+</pre>
+    <hr>
+    <h2>Test 4</h2>
+    <h3>./kalkulacka_minus_krat_deleno.src</h3>
+    <pre>.IPPcode19
+DEFVAR GF@operace
+DEFVAR GF@op1
+DEFVAR GF@op2
+DEFVAR GF@type
+LABEL start
+WRITE string@Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:
+READ GF@operace string
+JUMPIFEQ konec GF@operace string@e
+#switch
+WRITE string@Zadejte\032č&iacute;slo\0321:\010
+READ GF@op1 int
+WRITE string@Zadejte\032č&iacute;slo\0322:\010
+READ GF@op2 int
+JUMPIFEQ plus GF@operace string@+
+JUMPIFEQ minus GF@operace string@-
+JUMPIFEQ krat GF@operace string@*
+JUMPIFEQ deleno GF@operace string@/
+JUMP error
+LABEL plus
+ADD GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL minus
+SUB GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL krat
+MUL GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL deleno
+IDIV GF@op1 GF@op1 GF@op2
+WRITE string@V&aacute;&scaron;\032v&yacute;sledek:\032
+WRITE GF@op1
+WRITE string@\010
+JUMP start
+LABEL error
+WRITE string@Spatny\032vstupni\032typ!\010
+LABEL konec
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@type&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;6&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032va&scaron;i\032operaci\032(+,-,*,/)\032nebo\032e\032pro\032ukončen&iacute;:&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;7&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@operace&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;string&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;8&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;e&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;9&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0321:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;10&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;11&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Zadejte\032č&iacute;slo\0322:\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;12&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op2&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;13&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;+&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;14&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;-&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;15&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;*&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;16&quot; opcode=&quot;JUMPIFEQ&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@operace&lt;/arg2&gt;
+        &lt;arg3 type=&quot;string&quot;&gt;/&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;17&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;18&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;plus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;19&quot; opcode=&quot;ADD&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;20&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;21&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;22&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;23&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;24&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;minus&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;25&quot; opcode=&quot;SUB&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;26&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;27&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;28&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;29&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;30&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;krat&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;31&quot; opcode=&quot;MUL&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;32&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;33&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;34&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;35&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;36&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;deleno&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;37&quot; opcode=&quot;IDIV&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+        &lt;arg2 type=&quot;var&quot;&gt;GF@op1&lt;/arg2&gt;
+        &lt;arg3 type=&quot;var&quot;&gt;GF@op2&lt;/arg3&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;38&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;V&aacute;&scaron;\032v&yacute;sledek:\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;39&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@op1&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;40&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;41&quot; opcode=&quot;JUMP&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;start&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;42&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;error&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;43&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;Spatny\032vstupni\032typ!\010&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;44&quot; opcode=&quot;LABEL&quot;&gt;
+        &lt;arg1 type=&quot;label&quot;&gt;konec&lt;/arg1&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./kalkulacka_minus_krat_deleno.out</h3>
+    <pre lang="xml">Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:Zadejte č&iacute;slo 1:
+Zadejte č&iacute;slo 2:
+V&aacute;&scaron; v&yacute;sledek: 12
+Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:Zadejte č&iacute;slo 1:
+Zadejte č&iacute;slo 2:
+V&aacute;&scaron; v&yacute;sledek: 30
+Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:Zadejte č&iacute;slo 1:
+Zadejte č&iacute;slo 2:
+V&aacute;&scaron; v&yacute;sledek: 5
+Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:</pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./kalkulacka_minus_krat_deleno.rc</h3>
+    <pre>0</pre>
+    <h3>./kalkulacka_minus_krat_deleno.in</h3>
+    <pre>-
+20
+8
+*
+5
+6
+/
+15
+3
+e
+</pre>
+    <hr>
+    <h2>Test 5</h2>
+    <h3>./read_test.src</h3>
+    <pre>.IPPcode19  # nacteni vstupu a vypis
+DEFVAR GF@a
+READ GF@a int
+WRITE GF@a
+WRITE string@\032&lt;not-tag/&gt;\032 # řetězec přev&aacute;d&iacute;me, aby byl spr&aacute;vně uložen do XML elementu
+WRITE bool@true # zapisujeme mal&yacute;mi p&iacute;smeny</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@a&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;READ&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@a&lt;/arg1&gt;
+        &lt;arg2 type=&quot;type&quot;&gt;int&lt;/arg2&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@a&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;\032&amp;lt;not-tag/&amp;gt;\032&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;bool&quot;&gt;true&lt;/arg1&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>./read_test.out</h3>
+    <pre lang="xml">42 &lt;not-tag/&gt; true</pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>./read_test.rc</h3>
+    <pre>0</pre>
+    <h3>./read_test.in</h3>
+    <pre>42
+</pre>
+    <hr>
+
+  </body>
+</html>

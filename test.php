@@ -117,10 +117,9 @@ function make_test($file_name, $directory) {
 	global $parse_script, $int_script, $recursive, $int_only, $parse_only, $php, $tests;
 	$path = $directory.$file_name;
 	$command = $php.' '.$parse_script.' '.'<'.' '.$path.'.src';
-	system($command.' >'.'temp.parser.out', $parser_rc);
+	system($command.' >'.$file_name.'.parser.out', $parser_rc);
 	$parser_src = file_get_contents($path.'.src');
-	$parser_out = file_get_contents('temp.parser.out');
-	system('rm temp.parser.out');
+	$parser_out = file_get_contents($file_name.'.parser.out');
 	$test_out = file_get_contents($path.'.out');
 	$test_in = file_get_contents($path.'.in');
 	$test_rc = file_get_contents($path.'.rc');
