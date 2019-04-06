@@ -1,8 +1,9 @@
 .ippcode19
-
-# write test
-write int@10
-write string@some
-write bool@true
-write GF@so
-
+defvar GF@first
+defvar GF@second
+move GF@second int@10
+move GF@first GF@second
+createframe
+defvar TF@new
+defvar TF@som
+pushframe

@@ -1065,6 +1065,55 @@ BREAK
     <pre></pre>
     <hr>
     <h2>Test 18</h2>
+    <h3>tests/_git/int-only/my_tests/some.src</h3>
+    <pre>.ippcode19
+
+# write test
+
+write int@10
+write string@some
+write bool@true
+
+defvar GF@so
+write GF@so
+add GF@so int@10 int@20
+
+</pre>
+    <h3>Parser output</h3>
+    <pre lang="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;program language=&quot;IPPcode19&quot;&gt;
+    &lt;instruction order=&quot;1&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;int&quot;&gt;10&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;2&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;string&quot;&gt;some&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;3&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;bool&quot;&gt;true&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;DEFVAR&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;6&quot; opcode=&quot;ADD&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+        &lt;arg2 type=&quot;int&quot;&gt;10&lt;/arg2&gt;
+        &lt;arg3 type=&quot;int&quot;&gt;20&lt;/arg3&gt;
+    &lt;/instruction&gt;
+&lt;/program&gt;
+</pre>
+    <h3>tests/_git/int-only/my_tests/some.out</h3>
+    <pre lang="xml"></pre>
+    <h3>Parser return code</h3>
+    <pre>0</pre>
+    <h3>tests/_git/int-only/my_tests/some.rc</h3>
+    <pre>0</pre>
+    <h3>tests/_git/int-only/my_tests/some.in</h3>
+    <pre></pre>
+    <hr>
+    <h2>Test 19</h2>
     <h3>tests/_git/int-only/stack_calc/kalkulacka_STACK_rozsireni.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1304,7 +1353,7 @@ Zadejte va&scaron;i operaci (+,-,*,/) nebo e pro ukončen&iacute;:</pre>
 e
 </pre>
     <hr>
-    <h2>Test 19</h2>
+    <h2>Test 20</h2>
     <h3>tests/_git/int-only/stack_test.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1359,7 +1408,7 @@ e
     <h3>tests/_git/int-only/stack_test.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 20</h2>
+    <h2>Test 21</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1380,7 +1429,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 21</h2>
+    <h2>Test 22</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1402,7 +1451,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 22</h2>
+    <h2>Test 23</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1424,7 +1473,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/call3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 23</h2>
+    <h2>Test 24</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/createframe1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1446,7 +1495,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/createframe1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 24</h2>
+    <h2>Test 25</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1467,7 +1516,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 25</h2>
+    <h2>Test 26</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1489,7 +1538,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 26</h2>
+    <h2>Test 27</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1511,7 +1560,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/defvar3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 27</h2>
+    <h2>Test 28</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1533,7 +1582,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 28</h2>
+    <h2>Test 29</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1556,7 +1605,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 29</h2>
+    <h2>Test 30</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1582,7 +1631,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/move3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 30</h2>
+    <h2>Test 31</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1608,7 +1657,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 31</h2>
+    <h2>Test 32</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1629,7 +1678,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 32</h2>
+    <h2>Test 33</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1657,7 +1706,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 33</h2>
+    <h2>Test 34</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe4.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1678,7 +1727,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/popframe4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 34</h2>
+    <h2>Test 35</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1699,7 +1748,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 35</h2>
+    <h2>Test 36</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1724,7 +1773,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 36</h2>
+    <h2>Test 37</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1749,7 +1798,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 37</h2>
+    <h2>Test 38</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops4.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1774,7 +1823,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 38</h2>
+    <h2>Test 39</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops5.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1799,7 +1848,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pops5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 39</h2>
+    <h2>Test 40</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1823,7 +1872,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 40</h2>
+    <h2>Test 41</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1844,7 +1893,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 41</h2>
+    <h2>Test 42</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1870,7 +1919,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushframe3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 42</h2>
+    <h2>Test 43</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1891,7 +1940,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 43</h2>
+    <h2>Test 44</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1913,7 +1962,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 44</h2>
+    <h2>Test 45</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1935,7 +1984,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/pushs3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 45</h2>
+    <h2>Test 46</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/return1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1957,7 +2006,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/return1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 46</h2>
+    <h2>Test 47</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-fail/return2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -1978,7 +2027,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-fail/return2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 47</h2>
+    <h2>Test 48</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/esc_sequence.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2003,7 +2052,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/esc_sequence.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 48</h2>
+    <h2>Test 49</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/every_instruction_program.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2176,7 +2225,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/every_instruction_program.in</h3>
     <pre>abc</pre>
     <hr>
-    <h2>Test 49</h2>
+    <h2>Test 50</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment1.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;
@@ -2193,7 +2242,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 50</h2>
+    <h2>Test 51</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment2.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;</pre>
@@ -2209,7 +2258,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 51</h2>
+    <h2>Test 52</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment3.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;</pre>
@@ -2225,7 +2274,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 52</h2>
+    <h2>Test 53</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment4.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;
@@ -2242,7 +2291,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_comment4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 53</h2>
+    <h2>Test 54</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_w_space.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;</pre>
@@ -2258,7 +2307,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/header_w_space.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 54</h2>
+    <h2>Test 55</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/just_header.src</h3>
     <pre>&lt;?xml version='1.0' encoding='UTF-8'?&gt;
 &lt;program language='IPPcode19'/&gt;</pre>
@@ -2274,7 +2323,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/just_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 55</h2>
+    <h2>Test 56</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions1.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2296,7 +2345,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 56</h2>
+    <h2>Test 57</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions2.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2318,7 +2367,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 57</h2>
+    <h2>Test 58</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions3.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2340,7 +2389,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 58</h2>
+    <h2>Test 59</h2>
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions4.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2360,7 +2409,7 @@ e
     <h3>tests/_git/int-only/vyzi_tests/should-pass/from-parse-only/no_arg_instructions4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 59</h2>
+    <h2>Test 60</h2>
     <h3>tests/_git/int-only/write_test.src</h3>
     <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;program language=&quot;IPPcode19&quot;&gt;
@@ -2384,7 +2433,7 @@ e
     <h3>tests/_git/int-only/write_test.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 60</h2>
+    <h2>Test 61</h2>
     <h3>tests/_git/parse-only/Basic_tests/EmptyProgram.src</h3>
     <pre>.IPPcode19
 </pre>
@@ -2403,7 +2452,7 @@ e
     <h3>tests/_git/parse-only/Basic_tests/EmptyProgram.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 61</h2>
+    <h2>Test 62</h2>
     <h3>tests/_git/parse-only/Basic_tests/EveryInstruction.src</h3>
     <pre>.IPPcode19
 MOVE LF@par int@2
@@ -2726,7 +2775,7 @@ BREAK
     <h3>tests/_git/parse-only/Basic_tests/EveryInstruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 62</h2>
+    <h2>Test 63</h2>
     <h3>tests/_git/parse-only/Basic_tests/MissingHeader.src</h3>
     <pre>MOVE TF@ahoj TF@ahoj
 </pre>
@@ -2743,7 +2792,7 @@ BREAK
     <h3>tests/_git/parse-only/Basic_tests/MissingHeader.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 63</h2>
+    <h2>Test 64</h2>
     <h3>tests/_git/parse-only/Basic_tests/SpecialCharacters.src</h3>
     <pre>.IPPcode19
 DEFVAR TF@&amp;ahoj
@@ -2780,7 +2829,7 @@ MOVE TF@&amp;ahoj string@&lt;&gt;&amp;
     <h3>tests/_git/parse-only/Basic_tests/SpecialCharacters.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 64</h2>
+    <h2>Test 65</h2>
     <h3>tests/_git/parse-only/Example_tests/read_test.src</h3>
     <pre>.IPPcode19  # nacteni vstupu a vypis
 DEFVAR GF@a
@@ -2837,7 +2886,7 @@ WRITE bool@true#zapisujeme mal&yacute;mi p&iacute;smeny</pre>
     <h3>tests/_git/parse-only/Example_tests/read_test.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 65</h2>
+    <h2>Test 66</h2>
     <h3>tests/_git/parse-only/Example_tests/simple_tag.src</h3>
     <pre>.IPPcode19
 # Ukazka k&oacute;du se s&eacute;mantickou chybou (skript parse.php ale vrac&iacute; 0 m&iacute;sto 54), kter&aacute; nem&aacute; b&yacute;t detekov&aacute;na už v parse.php. Obsahuje př&iacute;klad elementu bez podelementů, kter&yacute; lze zapsat kr&aacute;tk&yacute;m i dlouh&yacute;m způsobem.
@@ -2888,7 +2937,7 @@ POPFRAME # tato instrukce bude pro ilustraci ve v&yacute;stupn&iacute;m XML zaps
     <h3>tests/_git/parse-only/Example_tests/simple_tag.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 66</h2>
+    <h2>Test 67</h2>
     <h3>tests/_git/parse-only/Example_tests/write_test.src</h3>
     <pre>.IPPcode19
 # WRITE neprovadi za vystupem odradkovani, pokud to neni diktovano argumenty
@@ -2924,7 +2973,7 @@ WRITE string@abc
     <h3>tests/_git/parse-only/Example_tests/write_test.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 67</h2>
+    <h2>Test 68</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/header_comment.src</h3>
     <pre>.IPPcode19 #foo
 DEFVAR GF@counter
@@ -2963,7 +3012,7 @@ MOVE GF@counter string@counter
     <h3>tests/_git/parse-only/Matthew_tests/0/header_comment.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 68</h2>
+    <h2>Test 69</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/header_comment_close.src</h3>
     <pre>.IPPcode19#foo
 DEFVAR GF@counter
@@ -3000,7 +3049,7 @@ MOVE GF@counter string@counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/header_comment_close.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 69</h2>
+    <h2>Test 70</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/nil_nil.src</h3>
     <pre>.IPPcode19
 MOVE TF@ahoj nil@nil</pre>
@@ -3028,7 +3077,7 @@ MOVE TF@ahoj nil@nil</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/nil_nil.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 70</h2>
+    <h2>Test 71</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/spaces.src</h3>
     <pre>.IPPcode19
 
@@ -3070,7 +3119,7 @@ MOVE GF@counter string@co\123unter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/spaces.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 71</h2>
+    <h2>Test 72</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/string_at.src</h3>
     <pre>.IPPcode19 #foo
 DEFVAR GF@counter
@@ -3096,7 +3145,7 @@ MOVE GF@counter string@coun@@t@e@r</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/string_at.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 72</h2>
+    <h2>Test 73</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/string_character_hash.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3133,7 +3182,7 @@ MOVE GF@counter string@co#unter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/string_character_hash.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 73</h2>
+    <h2>Test 74</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction.src</h3>
     <pre>.IPPcode19
 ADD LF@var string@text string@text</pre>
@@ -3162,7 +3211,7 @@ ADD LF@var string@text string@text</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 74</h2>
+    <h2>Test 75</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction2.src</h3>
     <pre>.IPPcode19
 ADD LF@var string@text GF@var</pre>
@@ -3191,7 +3240,7 @@ ADD LF@var string@text GF@var</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 75</h2>
+    <h2>Test 76</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction3.src</h3>
     <pre>.IPPcode19
 ADD LF@var GF@var string@text</pre>
@@ -3220,7 +3269,7 @@ ADD LF@var GF@var string@text</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 76</h2>
+    <h2>Test 77</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction4.src</h3>
     <pre>.IPPcode19
 ADD LF@var GF@var GF@var</pre>
@@ -3249,7 +3298,7 @@ ADD LF@var GF@var GF@var</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_add_instruction4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 77</h2>
+    <h2>Test 78</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_and_instruction.src</h3>
     <pre>.IPPcode19
 AND LF@var string@text string@text</pre>
@@ -3279,7 +3328,7 @@ AND LF@var string@text string@text</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_and_instruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 78</h2>
+    <h2>Test 79</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_and_instruction2.src</h3>
     <pre>.IPPcode19
 AND LF@var GF@text GF@foo</pre>
@@ -3309,7 +3358,7 @@ AND LF@var GF@text GF@foo</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_and_instruction2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 79</h2>
+    <h2>Test 80</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_break_instruction.src</h3>
     <pre>.IPPcode19
 BREAK</pre>
@@ -3331,7 +3380,7 @@ BREAK</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_break_instruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 80</h2>
+    <h2>Test 81</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_call_instruction.src</h3>
     <pre>.IPPcode19
 CALL label</pre>
@@ -3357,7 +3406,7 @@ CALL label</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_call_instruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 81</h2>
+    <h2>Test 82</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_hash_instruction.src</h3>
     <pre>.IPPcode19
 #</pre>
@@ -3376,7 +3425,7 @@ CALL label</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_hash_instruction.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 82</h2>
+    <h2>Test 83</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_uppercase.src</h3>
     <pre>.IPPcode19
 DEfVAR GF@counter</pre>
@@ -3402,7 +3451,7 @@ DEfVAR GF@counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/test_uppercase.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 83</h2>
+    <h2>Test 84</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_ampersand.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@&amp;counter</pre>
@@ -3428,7 +3477,7 @@ DEFVAR GF@&amp;counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_ampersand.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 84</h2>
+    <h2>Test 85</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_dollar.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@$counter</pre>
@@ -3454,7 +3503,7 @@ DEFVAR GF@$counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_dollar.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 85</h2>
+    <h2>Test 86</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_excalamation.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@!counter</pre>
@@ -3480,7 +3529,7 @@ DEFVAR GF@!counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_excalamation.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 86</h2>
+    <h2>Test 87</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_exclamation.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@!counter</pre>
@@ -3506,7 +3555,7 @@ DEFVAR GF@!counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_exclamation.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 87</h2>
+    <h2>Test 88</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_minus.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@-counter</pre>
@@ -3532,7 +3581,7 @@ DEFVAR GF@-counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_minus.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 88</h2>
+    <h2>Test 89</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_percent.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@%counter</pre>
@@ -3558,7 +3607,7 @@ DEFVAR GF@%counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_percent.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 89</h2>
+    <h2>Test 90</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_questionmark.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@?counter</pre>
@@ -3584,7 +3633,7 @@ DEFVAR GF@?counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_questionmark.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 90</h2>
+    <h2>Test 91</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_star.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@*counter</pre>
@@ -3610,7 +3659,7 @@ DEFVAR GF@*counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_star.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 91</h2>
+    <h2>Test 92</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_underline.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@_counter</pre>
@@ -3636,7 +3685,7 @@ DEFVAR GF@_counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/var_underline.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 92</h2>
+    <h2>Test 93</h2>
     <h3>tests/_git/parse-only/Matthew_tests/0/whitespace_before.src</h3>
     <pre>.IPPcode19
     DEFVAR GF@counter
@@ -3662,7 +3711,7 @@ DEFVAR GF@_counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/0/whitespace_before.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 93</h2>
+    <h2>Test 94</h2>
     <h3>tests/_git/parse-only/Matthew_tests/21/no_header.src</h3>
     <pre></pre>
     <h3>Parser output</h3>
@@ -3677,7 +3726,7 @@ DEFVAR GF@_counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/21/no_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 94</h2>
+    <h2>Test 95</h2>
     <h3>tests/_git/parse-only/Matthew_tests/21/wrong_header.src</h3>
     <pre>.IPPcode12</pre>
     <h3>Parser output</h3>
@@ -3692,7 +3741,7 @@ DEFVAR GF@_counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/21/wrong_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 95</h2>
+    <h2>Test 96</h2>
     <h3>tests/_git/parse-only/Matthew_tests/22/unknown.src</h3>
     <pre>.IPPcode19
 DEFV4R GF@counter</pre>
@@ -3708,7 +3757,7 @@ DEFV4R GF@counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/22/unknown.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 96</h2>
+    <h2>Test 97</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/bool_neither_true_false.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3725,7 +3774,7 @@ MOVE GF@counter bool@foo</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/bool_neither_true_false.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 97</h2>
+    <h2>Test 98</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_bool.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3742,7 +3791,7 @@ MOVE GF@counter bOOl@true</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_bool.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 98</h2>
+    <h2>Test 99</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_bool2.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3759,7 +3808,7 @@ MOVE GF@counter bool@tRue</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_bool2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 99</h2>
+    <h2>Test 100</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_gf.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3776,7 +3825,7 @@ MOVE gF@counter bOOl@true</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_gf.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 100</h2>
+    <h2>Test 101</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_int.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3793,7 +3842,7 @@ MOVE GF@counter Int@2</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_int.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 101</h2>
+    <h2>Test 102</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_lf.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3810,7 +3859,7 @@ MOVE lF@counter bOOl@true</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_lf.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 102</h2>
+    <h2>Test 103</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_nil.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3827,7 +3876,7 @@ MOVE GF@counter nIl@nil</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_nil.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 103</h2>
+    <h2>Test 104</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_string.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3844,7 +3893,7 @@ MOVE GF@counter sTring@foo</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_string.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 104</h2>
+    <h2>Test 105</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_tf.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3861,7 +3910,7 @@ MOVE tF@counter bOOl@true</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/case_sensitive_tf.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 105</h2>
+    <h2>Test 106</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/nil_not_nil.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3878,7 +3927,7 @@ MOVE GF@counter nil@foo</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/nil_not_nil.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 106</h2>
+    <h2>Test 107</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3895,7 +3944,7 @@ MOVE GF@counter string@co\unter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 107</h2>
+    <h2>Test 108</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash_one.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3912,7 +3961,7 @@ MOVE GF@counter string@co\1unter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash_one.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 108</h2>
+    <h2>Test 109</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash_two.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3930,7 +3979,7 @@ MOVE GF@counter string@co\13unter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/string_character_backslash_two.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 109</h2>
+    <h2>Test 110</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/symb_unknown_type.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@counter
@@ -3947,7 +3996,7 @@ MOVE GF@counter strink@counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/symb_unknown_type.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 110</h2>
+    <h2>Test 111</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/test_not_instruction_operands.src</h3>
     <pre>.IPPcode19
 NOT LF@var string@text string@text</pre>
@@ -3963,7 +4012,7 @@ NOT LF@var string@text string@text</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/test_not_instruction_operands.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 111</h2>
+    <h2>Test 112</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_frame.src</h3>
     <pre>.IPPcode19
 DEFVAR AF@counter</pre>
@@ -3979,7 +4028,7 @@ DEFVAR AF@counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_frame.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 112</h2>
+    <h2>Test 113</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_bracket.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@[counter</pre>
@@ -4000,7 +4049,7 @@ DEFVAR GF@[counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_bracket.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 113</h2>
+    <h2>Test 114</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_number.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@1counter</pre>
@@ -4016,7 +4065,7 @@ DEFVAR GF@1counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_number.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 114</h2>
+    <h2>Test 115</h2>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_parentheses.src</h3>
     <pre>.IPPcode19
 DEFVAR GF@(counter</pre>
@@ -4032,7 +4081,7 @@ DEFVAR GF@(counter</pre>
     <h3>tests/_git/parse-only/Matthew_tests/23/wrong_var_parentheses.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 115</h2>
+    <h2>Test 116</h2>
     <h3>tests/_git/parse-only/dify_test/extra_rtzw.src</h3>
     <pre>     .ippcode19#komentar
      move GF@a   string@nani     #taky komentar
@@ -4071,7 +4120,7 @@ move    GF@a         string@&lt;&gt;&amp;
     <h3>tests/_git/parse-only/dify_test/extra_rtzw.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 116</h2>
+    <h2>Test 117</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant.src</h3>
     <pre>.ippcode19
 mOvE GF@nah string@#
@@ -4104,7 +4153,7 @@ mOvE GF@nah string@#
     <h3>tests/_git/parse-only/isha_tests/okay_constant.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 117</h2>
+    <h2>Test 118</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant2.src</h3>
     <pre>.ippcode19
 mOvE GF@nah string@#
@@ -4137,7 +4186,7 @@ mOvE GF@nah string@#
     <h3>tests/_git/parse-only/isha_tests/okay_constant2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 118</h2>
+    <h2>Test 119</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant3.src</h3>
     <pre>.ippcode19
 mOvE GF@nah bool@false
@@ -4170,7 +4219,7 @@ mOvE GF@nah bool@false
     <h3>tests/_git/parse-only/isha_tests/okay_constant3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 119</h2>
+    <h2>Test 120</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant4.src</h3>
     <pre>.ippcode19
 mOvE GF@nah nil@nil
@@ -4202,7 +4251,7 @@ mOvE GF@nah nil@nil
     <h3>tests/_git/parse-only/isha_tests/okay_constant4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 120</h2>
+    <h2>Test 121</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant5.src</h3>
     <pre>.ippcode19
 mOvE GF@nah int@+0025
@@ -4228,7 +4277,7 @@ mOvE GF@nah int@+0025
     <h3>tests/_git/parse-only/isha_tests/okay_constant5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 121</h2>
+    <h2>Test 122</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_constant6.src</h3>
     <pre>.ippcode19
 mOvE GF@nah   	string@$$_-_&lt;&gt;&amp;@&quot;'
@@ -4255,7 +4304,7 @@ mOvE GF@nah   	string@$$_-_&lt;&gt;&amp;@&quot;'
     <h3>tests/_git/parse-only/isha_tests/okay_constant6.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 122</h2>
+    <h2>Test 123</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_header.src</h3>
     <pre>.iPpCoDe19
 
@@ -4276,7 +4325,7 @@ mOvE GF@nah   	string@$$_-_&lt;&gt;&amp;@&quot;'
     <h3>tests/_git/parse-only/isha_tests/okay_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 123</h2>
+    <h2>Test 124</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_header2.src</h3>
     <pre>  		   .ippcode19   			#koment k zblit&iacute;
 
@@ -4297,7 +4346,7 @@ mOvE GF@nah   	string@$$_-_&lt;&gt;&amp;@&quot;'
     <h3>tests/_git/parse-only/isha_tests/okay_header2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 124</h2>
+    <h2>Test 125</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_header3.src</h3>
     <pre>.ippCODE19 	 
 
@@ -4320,7 +4369,7 @@ mOvE GF@nah   	string@$$_-_&lt;&gt;&amp;@&quot;'
     <h3>tests/_git/parse-only/isha_tests/okay_header3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 125</h2>
+    <h2>Test 126</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_string.src</h3>
     <pre>.ippCode19 	 
 MOVE LF@a string@#lolkoment
@@ -4353,7 +4402,7 @@ MOVE LF@a string@#lolkoment
     <h3>tests/_git/parse-only/isha_tests/okay_string.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 126</h2>
+    <h2>Test 127</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable.src</h3>
     <pre>.ippCode19 	 
 DEFVAR GF@$?!_-&amp;%*1234567890
@@ -4384,7 +4433,7 @@ DEFVAR GF@$?!_-&amp;%*1234567890
     <h3>tests/_git/parse-only/isha_tests/okay_variable.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 127</h2>
+    <h2>Test 128</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable2.src</h3>
     <pre>.ippCode19 	 
 DEFVAR GF@$?!_-&amp;%*1234567890
@@ -4415,7 +4464,7 @@ MOVE LF@_x string@`!@#$%^&amp;*{}}\['\$*&gt;&lt;^}{@&amp;#&deg;/~ĐĐ[]]`''ŁŁ�
     <h3>tests/_git/parse-only/isha_tests/okay_variable2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 128</h2>
+    <h2>Test 129</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable3.src</h3>
     <pre>.ippCode19 	 
 DEFVAR GF@$?!_-&amp;%*1234567890
@@ -4455,7 +4504,7 @@ NOT TF@a bool@true
     <h3>tests/_git/parse-only/isha_tests/okay_variable3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 129</h2>
+    <h2>Test 130</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable4.src</h3>
     <pre>.ippCode19 	 
 	DEFVAR   GF@?abraKA		
@@ -4481,7 +4530,7 @@ NOT TF@a bool@true
     <h3>tests/_git/parse-only/isha_tests/okay_variable4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 130</h2>
+    <h2>Test 131</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable5.src</h3>
     <pre>.ippCode19 	 
 DEFVAR 	 	GF@$!dabra
@@ -4512,7 +4561,7 @@ DEFVAR 	 	GF@$!dabra
     <h3>tests/_git/parse-only/isha_tests/okay_variable5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 131</h2>
+    <h2>Test 132</h2>
     <h3>tests/_git/parse-only/isha_tests/okay_variable6.src</h3>
     <pre>.ippCode19 	 
    DEFVAR GF@*nespadnes!
@@ -4539,7 +4588,7 @@ DEFVAR 	 	GF@$!dabra
     <h3>tests/_git/parse-only/isha_tests/okay_variable6.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 132</h2>
+    <h2>Test 133</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant.src</h3>
     <pre>.ippcode19
 mOvE GF@nah BOOL@TRUE
@@ -4558,7 +4607,7 @@ mOvE GF@nah BOOL@TRUE
     <h3>tests/_git/parse-only/isha_tests/wrong_constant.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 133</h2>
+    <h2>Test 134</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant10.src</h3>
     <pre>.ippcode19
 mOvE GF@nah string@tady mi to ups ujelo
@@ -4577,7 +4626,7 @@ mOvE GF@nah string@tady mi to ups ujelo
     <h3>tests/_git/parse-only/isha_tests/wrong_constant10.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 134</h2>
+    <h2>Test 135</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant2.src</h3>
     <pre>.ippcode19
 mOvE GF@nah BOOL@true
@@ -4596,7 +4645,7 @@ mOvE GF@nah BOOL@true
     <h3>tests/_git/parse-only/isha_tests/wrong_constant2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 135</h2>
+    <h2>Test 136</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant3.src</h3>
     <pre>.ippcode19
 mOvE GF@nah bool@TRUE
@@ -4615,7 +4664,7 @@ mOvE GF@nah bool@TRUE
     <h3>tests/_git/parse-only/isha_tests/wrong_constant3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 136</h2>
+    <h2>Test 137</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant4.src</h3>
     <pre>.ippcode19
 mOvE GF@nah bool@True
@@ -4634,7 +4683,7 @@ mOvE GF@nah bool@True
     <h3>tests/_git/parse-only/isha_tests/wrong_constant4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 137</h2>
+    <h2>Test 138</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant5.src</h3>
     <pre>.ippcode19
 mOvE GF@nah nil@
@@ -4653,7 +4702,7 @@ mOvE GF@nah nil@
     <h3>tests/_git/parse-only/isha_tests/wrong_constant5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 138</h2>
+    <h2>Test 139</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant6.src</h3>
     <pre>.ippcode19
 mOvE GF@nah nil@NIL
@@ -4672,7 +4721,7 @@ mOvE GF@nah nil@NIL
     <h3>tests/_git/parse-only/isha_tests/wrong_constant6.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 139</h2>
+    <h2>Test 140</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant7.src</h3>
     <pre>.ippcode19
 mOvE GF@nah INT@256
@@ -4691,7 +4740,7 @@ mOvE GF@nah INT@256
     <h3>tests/_git/parse-only/isha_tests/wrong_constant7.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 140</h2>
+    <h2>Test 141</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_constant9.src</h3>
     <pre>.ippcode19
 mOvE GF@nah string@\
@@ -4710,7 +4759,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_constant9.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 141</h2>
+    <h2>Test 142</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header.src</h3>
     <pre>.ifjcode19
 
@@ -4728,7 +4777,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 142</h2>
+    <h2>Test 143</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header2.src</h3>
     <pre>.IPPcode18
 
@@ -4746,7 +4795,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 143</h2>
+    <h2>Test 144</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header3.src</h3>
     <pre>.ipp
 
@@ -4764,7 +4813,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 144</h2>
+    <h2>Test 145</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header4.src</h3>
     <pre>.ippcode20
 
@@ -4782,7 +4831,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 145</h2>
+    <h2>Test 146</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header5.src</h3>
     <pre>.ippcode1
 
@@ -4800,7 +4849,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 146</h2>
+    <h2>Test 147</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_header6.src</h3>
     <pre>#.ippcode19
 
@@ -4818,7 +4867,7 @@ mOvE GF@nah string@\
     <h3>tests/_git/parse-only/isha_tests/wrong_header6.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 147</h2>
+    <h2>Test 148</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_variable.src</h3>
     <pre>.ippCode19 	 
 DEFVAR 	 GF@.ojoj  	
@@ -4837,7 +4886,7 @@ DEFVAR 	 GF@.ojoj
     <h3>tests/_git/parse-only/isha_tests/wrong_variable.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 148</h2>
+    <h2>Test 149</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_variable2.src</h3>
     <pre>.ippCode19 	 
 DEFVAR gf@MalyGF
@@ -4856,7 +4905,7 @@ DEFVAR gf@MalyGF
     <h3>tests/_git/parse-only/isha_tests/wrong_variable2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 149</h2>
+    <h2>Test 150</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_variable3.src</h3>
     <pre>.ippCode19 	 
 DEFVAR GF@ojoj TF@ojoj
@@ -4875,7 +4924,7 @@ DEFVAR GF@ojoj TF@ojoj
     <h3>tests/_git/parse-only/isha_tests/wrong_variable3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 150</h2>
+    <h2>Test 151</h2>
     <h3>tests/_git/parse-only/isha_tests/wrong_variable4.src</h3>
     <pre>.ippCode19 	 
 DEFVAR int@-1020
@@ -4894,7 +4943,7 @@ DEFVAR int@-1020
     <h3>tests/_git/parse-only/isha_tests/wrong_variable4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 151</h2>
+    <h2>Test 152</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode1.src</h3>
     <pre>.IPPcode19
 CREATEFRAMES
@@ -4912,7 +4961,7 @@ CREATEFRAMES
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 152</h2>
+    <h2>Test 153</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode2.src</h3>
     <pre>.IPPcode19
 CREATEFRAMEPUSHFRAME
@@ -4930,7 +4979,7 @@ CREATEFRAMEPUSHFRAME
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 153</h2>
+    <h2>Test 154</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode3.src</h3>
     <pre>.IPPcode19
 ACREATEFRAME
@@ -4948,7 +4997,7 @@ ACREATEFRAME
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/unknown_opcode3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 154</h2>
+    <h2>Test 155</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count1.src</h3>
     <pre>.IPPcode19
 CREATEFRAME GF@ABC
@@ -4966,7 +5015,7 @@ CREATEFRAME GF@ABC
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 155</h2>
+    <h2>Test 156</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count2.src</h3>
     <pre>.IPPcode19
 DEFVAR
@@ -4984,7 +5033,7 @@ DEFVAR
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 156</h2>
+    <h2>Test 157</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count3.src</h3>
     <pre>.IPPcode19
 MOVE GF@a GF@x GF@ou
@@ -5002,7 +5051,7 @@ MOVE GF@a GF@x GF@ou
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_count3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 157</h2>
+    <h2>Test 158</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type1.src</h3>
     <pre>.IPPcode19
 MOVE int@531 GF@tahi
@@ -5020,7 +5069,7 @@ MOVE int@531 GF@tahi
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 158</h2>
+    <h2>Test 159</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type2.src</h3>
     <pre>.IPPcode19
 CALL GF@tadi
@@ -5038,7 +5087,7 @@ CALL GF@tadi
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 159</h2>
+    <h2>Test 160</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type3.src</h3>
     <pre>.IPPcode19
 POPS int@nathu
@@ -5056,7 +5105,7 @@ POPS int@nathu
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 160</h2>
+    <h2>Test 161</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type4.src</h3>
     <pre>.IPPcode19
 PUSHS labelhahah
@@ -5074,7 +5123,7 @@ PUSHS labelhahah
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 161</h2>
+    <h2>Test 162</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type5.src</h3>
     <pre>.IPPcode19
 READ GF@tauh nil
@@ -5092,7 +5141,7 @@ READ GF@tauh nil
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_arg_type5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 162</h2>
+    <h2>Test 163</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_esc_sequence1.src</h3>
     <pre>.IPPcode19
 MOVE GF@tahu string@taht\13
@@ -5110,7 +5159,7 @@ MOVE GF@tahu string@taht\13
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_esc_sequence1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 163</h2>
+    <h2>Test 164</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_esc_sequence2.src</h3>
     <pre>.IPPcode19
 MOVE GF@natuht string@natu\1a9astnuh
@@ -5128,7 +5177,7 @@ MOVE GF@natuht string@natu\1a9astnuh
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_esc_sequence2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 164</h2>
+    <h2>Test 165</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame1.src</h3>
     <pre>.IPPcode19
 POPS EF@ntahu
@@ -5146,7 +5195,7 @@ POPS EF@ntahu
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 165</h2>
+    <h2>Test 166</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame2.src</h3>
     <pre>.IPPcode19
 POPS gf@nathu
@@ -5164,7 +5213,7 @@ POPS gf@nathu
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 166</h2>
+    <h2>Test 167</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame3.src</h3>
     <pre>.IPPcode19
 POPS GF@
@@ -5182,7 +5231,7 @@ POPS GF@
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_frame3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 167</h2>
+    <h2>Test 168</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header1.src</h3>
     <pre>.IPPcode18
 #spatna hlavicka
@@ -5200,7 +5249,7 @@ POPS GF@
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 168</h2>
+    <h2>Test 169</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header2.src</h3>
     <pre>IPPcode19
 </pre>
@@ -5217,7 +5266,7 @@ POPS GF@
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 169</h2>
+    <h2>Test 170</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header3.src</h3>
     <pre>.IFJcode18
 </pre>
@@ -5234,7 +5283,7 @@ POPS GF@
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 170</h2>
+    <h2>Test 171</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header5.src</h3>
     <pre>#.IPPcode19
 CREATEFRAME
@@ -5252,7 +5301,7 @@ CREATEFRAME
     <h3>tests/_git/parse-only/vyzi_tests/should-fail/wrong_header5.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 171</h2>
+    <h2>Test 172</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/esc_sequence.src</h3>
     <pre>.IPPcode19
 move GF@antuh string@tau\093ntaohu\319natuh\204toauhn#\204 tahutn
@@ -5282,7 +5331,7 @@ move GF@antuh string@tau\093ntaohu\319natuh\204toauhn#\204 tahutn
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/esc_sequence.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 172</h2>
+    <h2>Test 173</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/every_instruction_program.src</h3>
     <pre>.IPPcode19# anthuh
 
@@ -5670,7 +5719,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/every_instruction_program.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 173</h2>
+    <h2>Test 174</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment1.src</h3>
     <pre>.IPPcode19#comment
 </pre>
@@ -5689,7 +5738,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 174</h2>
+    <h2>Test 175</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment2.src</h3>
     <pre>.IPPcode19 #comment
 </pre>
@@ -5707,7 +5756,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 175</h2>
+    <h2>Test 176</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment3.src</h3>
     <pre>.IPPcode19
 #comment
@@ -5726,7 +5775,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 176</h2>
+    <h2>Test 177</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment4.src</h3>
     <pre>.IPPcode19# comment
 </pre>
@@ -5745,7 +5794,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_comment4.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 177</h2>
+    <h2>Test 178</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_lower.src</h3>
     <pre>.ippcode19
 </pre>
@@ -5764,7 +5813,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_lower.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 178</h2>
+    <h2>Test 179</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_w_space.src</h3>
     <pre>.IPPcode19    
   
@@ -5784,7 +5833,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/header_w_space.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 179</h2>
+    <h2>Test 180</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/just_header.src</h3>
     <pre>.IPPcode19</pre>
     <h3>Parser output</h3>
@@ -5802,7 +5851,7 @@ return
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/just_header.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 180</h2>
+    <h2>Test 181</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions1.src</h3>
     <pre>.IPPcode19
 CREATEFRAME
@@ -5838,7 +5887,7 @@ BREAK
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions1.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 181</h2>
+    <h2>Test 182</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions2.src</h3>
     <pre>.IPPcode19
 CrEATEFRAME
@@ -5874,7 +5923,7 @@ BREAK
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions2.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 182</h2>
+    <h2>Test 183</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions3.src</h3>
     <pre>.IPPcode19
 #thau
@@ -5916,7 +5965,7 @@ BREAK#
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions3.in</h3>
     <pre></pre>
     <hr>
-    <h2>Test 183</h2>
+    <h2>Test 184</h2>
     <h3>tests/_git/parse-only/vyzi_tests/should-pass/no_arg_instructions4.src</h3>
     <pre>.IPPcode19
 CREATEFRAME

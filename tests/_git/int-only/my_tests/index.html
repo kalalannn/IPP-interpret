@@ -11,10 +11,14 @@
     <pre>.ippcode19
 
 # write test
+
 write int@10
 write string@some
 write bool@true
+
+defvar GF@so
 write GF@so
+add GF@so int@10 int@20
 
 </pre>
     <h3>Parser output</h3>
@@ -29,8 +33,16 @@ write GF@so
     &lt;instruction order=&quot;3&quot; opcode=&quot;WRITE&quot;&gt;
         &lt;arg1 type=&quot;bool&quot;&gt;true&lt;/arg1&gt;
     &lt;/instruction&gt;
-    &lt;instruction order=&quot;4&quot; opcode=&quot;WRITE&quot;&gt;
+    &lt;instruction order=&quot;4&quot; opcode=&quot;DEFVAR&quot;&gt;
         &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;5&quot; opcode=&quot;WRITE&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+    &lt;/instruction&gt;
+    &lt;instruction order=&quot;6&quot; opcode=&quot;ADD&quot;&gt;
+        &lt;arg1 type=&quot;var&quot;&gt;GF@so&lt;/arg1&gt;
+        &lt;arg2 type=&quot;int&quot;&gt;10&lt;/arg2&gt;
+        &lt;arg3 type=&quot;int&quot;&gt;20&lt;/arg3&gt;
     &lt;/instruction&gt;
 &lt;/program&gt;
 </pre>

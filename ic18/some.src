@@ -1,4 +1,4 @@
 .IFJcode18
-write int@10
-write string@\010
-defvar GF@i
+defvar GF@a
+defvar GF@b
+move GF@a GF@b
