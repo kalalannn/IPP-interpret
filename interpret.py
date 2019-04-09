@@ -1,12 +1,21 @@
 #!/usr/bin/python3
 from sys import argv
+from sys import stderr
 import re
 import xml.etree.ElementTree as ET
+err_line = 1
 
-def par_error()   :  print("Error: Parameter");  exit(10)
-def undefined_variable() : print("Error: Undefined variable"); exit(54)
-def frame_error() :  print("Error: Frame does not exists");  exit(55)
-def uninitilized_variable() : print("Error: Variable has not been initializated"); exit(56)
+class Error(object):
+    def par_error()   :  print("Error: Parameter, try --help");  exit(10)
+    def bad_label()   : print("Error: Bad Label"); exit(52)
+    def bad_types() : print("Error: Bad types of operands"); exit(53)
+    def undefined_variable() : print("Error: Undefined variable"); exit(54)
+    def frame_error() :  print("Error: Frame does not exists");  exit(55)
+    def uninitilized_variable() : print("Error: Variable has not been initializated"); exit(56)
+    def empty_stack() : print("Error: Stack is empty"); exit(56)
+    def division_error() : print("Error: Division by zero"); exit(57)
+    def bad_value() : print("Error: Bad value"); exit(57)
+    def string_error() : print("Error: String error"); exit(58)
 
 def print_help():
     print(
@@ -31,11 +40,18 @@ def print_help():
 
 def check_argv(source_file, input_file):
     if source_file == input_file == None:
-        print("Error: Need at least one argv: --input or --source, --help")
+        print ('hete\n\n\n\\n\n\n')
         par_error()
 
-def split_symb(var):
-   return var.split('@')  # (frame, name)
+def str2bool(var) -> bool :
+    return var.lower() in ['true']
+
+def str2str(val) -> str:
+    val = val.split('\\')
+    res = val[0]
+    for x in val[1:]:
+        res += chr(int(x[0:3])) + x[3:]
+    return res
 
 class Frames(object):
     def __init__(self):
@@ -43,11 +59,17 @@ class Frames(object):
         self.stack_frames = []    # stack is clean
         self.temp_frame = None    # temporary frame does not exist
 
+    def get_tuple(self, *symb):
+        if symb[0] == 'var':
+            return self.get_val(symb[1]).split('@')
+        else:
+            return symb
+
     def createframe(self):
         self.temp_frame = {}
 
     def pushframe(self):
-        if self.temp_frame is None:
+        if self.temp_frame == None:
             frame_error()
         self.stack_frames.append(self.temp_frame)
         self.temp_frame = None
@@ -58,7 +80,7 @@ class Frames(object):
         except IndexError:
             frame_error()
 
-    def check_frame(self, frame):
+    def check_frame(self, frame):  # check if frame is not empty
         if frame == 'GF':
             pass
         elif frame == 'LF':
@@ -68,8 +90,8 @@ class Frames(object):
             if self.temp_frame ==  None:
                 frame_error()
 
-    def check_var(self, var):
-        frame, name = split_symb(var)
+    def check_var(self, var):       # check if var was defined
+        frame, name = var.split('@')
         self.check_frame(frame)
         if frame == 'GF':
             try :
@@ -86,20 +108,19 @@ class Frames(object):
                 self.temp_frame[name]
             except KeyError:
                 undefined_variable()
-        
 
-    def defvar(self, var):
-        frame, name = split_symb(var)
+    def defvar(self, var):          # define var
+        frame, name = var.split('@')
         self.check_frame(frame)
         if frame == 'GF':
-            self.global_frame[name] = (None)
+            self.global_frame[name] = "None@None"
         elif frame == 'LF':
-            self.stack_frames[-1][name] = (None)
+            self.stack_frames[-1][name] = "None@None"
         elif frame == 'TF':
-            self.temp_frame[name] = (None)
+            self.temp_frame[name] = "None@None"
 
-    def get_val(self, var):
-        frame, name = split_symb(var)
+    def get_val(self, var) -> str:         # get value of defined variable
+        frame, name = var.split('@')
         self.check_frame(frame)
         self.check_var(var)
 
@@ -110,12 +131,10 @@ class Frames(object):
         elif frame == 'TF':
             return self.temp_frame[name] 
 
-
-
-    def update_val(self, var, val):
-        frame, name = split_symb(var)
+    def update_val(self, val, *var): # update value of defined variable
+        frame, name = var[1].split('@')
         self.check_frame(frame)
-        self.check_var(var)
+        self.check_var(var[1])
 
         if frame ==  'GF':
             self.global_frame[name] = val
@@ -124,22 +143,55 @@ class Frames(object):
         elif frame == 'TF':
             self.temp_frame[name] = val
 
-        
-
 class Machine(object):
-    def __init__(self):
+    def __init__(self, input_file):
         self.frames = Frames()
+        self.labels = {}
+        self.instr_queue = []
         self.data_stack = []      # data stack
+        self.input_text = []
+        if input_file != None:
+            with open(input_file) as f:
+                self.input_text = f.readlines()
+            self.input_text = [x.strip() for x  in self.input_text]
+            self.input_text.reverse()
 
-    def run(self, instr):
-        action = getattr(self, instr.attrib['opcode'].lower()+'_i')
-        args = tuple((x.attrib['type'], x.text) for x in instr)
-        action(*args) #tuple(tuple(type, text))
+    def add_label(self, name, line):
+        self.labels[name] = line 
+
+    def run(self, run_line):
+        temp = self.instr_queue[run_line:]
+        for instr in temp:
+            action = getattr(self, instr.attrib['opcode'].lower()+'_i')
+            args = tuple((x.attrib['type'], x.text) for x in instr)
+            ret = action(*args)
+            if ret == 'return': #tuple(tuple(type, text))
+                break;
+
+    def get_line(self, name) -> int:
+        try: 
+            return int(self.labels[name])
+        except KeyError:
+            bad_label()
 
     def write_i(self, *args):
-        pass
-    def dwrite_i(self, *args):
-        pass
+        typ, val = self.frames.get_tuple(*args[0])
+
+        if typ == 'None':
+            uninitilized_variable()
+        elif typ == 'nil':
+            return 
+        elif typ == 'string':
+            print(str2str(val), end='')
+        else :
+            print(val, end='')
+            
+    def dprint_i(self, *args):
+        typ, val = self.frames.get_tuple(*args[0])
+        if typ == 'int':
+            stderr.write(val)
+        else:
+            bad_types()
 
     def createframe_i(self, *empty):
         self.frames.createframe()
@@ -154,77 +206,227 @@ class Machine(object):
         self.frames.defvar(args[0][1])
 
     def move_i(self, *args): # <var> <symb>
-        if args[1][0] == 'var':
-            val = self.frames.get_val(args[1][1])
-            if val == (None):
-                uninitilized_variable()
-        else:
-            val = args[1][0] + '@' + args[1][1]
-        self.frames.update_val(args[0][1], val)
-
+        typ, val = self.frames.get_tuple(*args[1])
+        if typ == 'None':
+            uninitilized_variable()
+        self.frames.update_val(typ + '@' + val, *args[0])
         
-    def call_i(self, *args):
-        pass
-    def return_i(self, *args):
-        pass
     def pushs_i(self, *args):
-        self.data_stack.append(args[0])
+        typ, val = self.frames.get_tuple(*args[0])
+        if typ == 'None':
+            uninitilized_variable()
+        self.data_stack.append(typ + '@' + val)
 
     def pops_i(self, *args):
         try:
-            self.data_stack.pop()
+            val = self.data_stack.pop()
         except IndexError:
-            pass
+            empty_stack()
+        self.frames.update_val(val, *args[0])
 
+    def operation(self, operation, *args):
+        typ1, val1 = self.frames.get_tuple(*args[1])
 
-    def add_i(self, *args):
-        pass
-    def sub_i(self, *args):
-        pass
-    def mul_i(self, *args):
-        pass
-    def idiv_i(self, *args):
-        pass
-    def lt_i(self, *args):
-        pass
-    def gt_i(self, *args):
-        pass
-    def eq_i(self, *args):
-        pass
-    def and_i(self, *args):
-        pass
-    def or_i(self, *args):
-        pass
-    def not_i(self, *args):
-        pass
-    def int2char_i(self, *args):
-        pass
-    def stri2i_i(self, *args):
-        pass
-    def read_i(self, *args):
-        pass
+        if operation == 'not':
+            if typ1 == 'bool':
+                val = typ1 + '@' + str(not str2bool(val1)).lower()
+                return val
+            else:
+                bad_types()
+
+        typ2, val2 = self.frames.get_tuple(*args[2])
+
+        if typ1 == typ2 == 'int':
+            val1 = int(val1)
+            val2 = int(val2)
+        elif typ1 == typ2  == 'string':
+            val1 = str2str(val1)
+            val2 = str2str(val2)
+        elif typ1 == typ2 == 'bool':
+            val1 = str2bool(val1)
+            val2 = str2bool(val2)
+        elif typ1 == 'nil' or typ2 == 'nil':
+            if operation != '==':
+                bad_types()
+        else :
+            bad_types()
+
+        if operation in ['<', '>', '==']:
+            typ1 = 'bool'
+
+        if (operation in ['+', '-', '*', '/'] and (typ1 != 'int' or typ2 != 'int')) or \
+                (operation in ['concat'] and (typ1 != 'string' or typ2 != 'string')) or \
+                (operation in ['and', 'or'] and (typ1 != 'bool' or typ2 != 'bool')):
+            bad_types()
+
+        if operation == '+' or operation == 'concat':
+            val = str(val1 + val2)
+        elif operation == '-': 
+            val = str(val1 - val2)
+        elif operation == '*':
+            val = str(val1 * val2)
+        elif operation == '/':
+            try:
+                val = str(int(val1) // int(val2))
+            except ZeroDivisionError:
+                division_error()
+        elif operation == '<':
+            val = str(val1 < val2).lower()
+        elif operation == '>':
+            val = str(val1 > val2).lower()
+        elif operation == '==':
+            val = str(val1 == val2).lower()
+        elif operation == 'and':
+            val = str(val1 and val2).lower()
+        elif operation == 'or':
+            val = str(val1 or val2).lower()
+
+        return typ1 + '@' + val
+
     def concat_i(self, *args):
-        pass
-    def strlen_i(self, *args):
-        pass
-    def getchar_i(self, *args):
-        pass
-    def setchar_i(self, *args):
-        pass
+        self.frames.update_val(self.operation('concat', *args), *args[0])
+    def add_i(self, *args):
+        self.frames.update_val(self.operation('+', *args), *args[0])
+    def sub_i(self, *args):
+        self.frames.update_val(self.operation('-', *args), *args[0])
+    def mul_i(self, *args):
+        self.frames.update_val(self.operation('*', *args), *args[0])
+    def idiv_i(self, *args):
+        self.frames.update_val(self.operation('/', *args), *args[0])
+        
+    def lt_i(self, *args):
+        self.frames.update_val(self.operation('<', *args), *args[0])
+    def gt_i(self, *args):
+        self.frames.update_val(self.operation('>', *args), *args[0])
+    def eq_i(self, *args):
+        self.frames.update_val(self.operation('==', *args), *args[0])
+
+    def and_i(self, *args):
+        self.frames.update_val(self.operation('and', *args), *args[0])
+    def or_i(self, *args):
+        self.frames.update_val(self.operation('or', *args), *args[0])
+    def not_i(self, *args):
+        self.frames.update_val(self.operation('not', *args), *args[0])
+
+    def int2char_i(self, *args):
+        typ, val = self.frames.get_tuple(*args[1])
+
+        if typ != 'int':
+            bad_types()
+
+        try:
+            self.frames.update_val('string' + '@' + chr(int(val)), *args[0])
+        except ValueError:
+            string_error()
+
+    def stri2int_i(self, *args):
+        typ1, val1 = self.frames.get_tuple(*args[1])
+        typ2, val2 = self.frames.get_tuple(*args[2])
+
+        if typ1 != 'string' or typ2 != 'int':
+            bad_types()
+
+        val1 = str2str(val1)
+
+        try:
+            self.frames.update_val('int' + '@' + str(ord(val1[int(val2)])), *args[0])
+        except IndexError:
+            string_error()
+
+    def exit_i(self, *args):
+        typ, val = self.frames.get_tuple(*args[0])
+        if typ != 'int' or not(0 <= int(val) <= 49):
+            bad_value()
+        exit(int(val))
+
     def type_i(self, *args):
-        pass
+        typ, val = self.frames.get_tuple(*args[1])
+        if typ == 'None':
+            typ = ""
+        self.frames.update_val('string@' + typ, *args[0])
+
+    def strlen_i(self, *args):
+        typ, val = self.frames.get_tuple(*args[1])
+        if typ != 'string':
+            bad_types()
+        self.frames.update_val('int@' + str(len(val)), *args[0])
+
+    def getchar_i(self, *args):
+        typ1, val1 = self.frames.get_tuple(*args[1])
+        typ2, val2 = self.frames.get_tuple(*args[2])
+
+        if typ1 != 'string' or typ2 != 'int':
+            bad_types()
+        try: 
+            self.frames.update_val('string@' + val1[int(val2)], *args[0])
+        except IndexError:
+            string_error()
+
+    def setchar_i(self, *args):
+        typ0, val0 = self.frames.get_tuple(*args[0])
+        typ1, val1 = self.frames.get_tuple(*args[1])
+        typ2, val2 = self.frames.get_tuple(*args[2])
+        if typ0 != 'string' or typ1 != 'int' or typ2 != 'string':
+            bad_types()
+        try: 
+            val0 = list(val0)
+            val0[int(val1)] = val2[0]
+            self.frames.update_val('string@' + "".join(val0), *args[0])
+        except IndexError:
+            string_error()
+
+    def break_i(self, *args):
+        print('stack: ' + str(self.data_stack))
+        print('globFrame: '+str(self.frames.global_frame))
+        print('allFrames: '+str(self.frames.stack_frames))
+        print('tempFrames: '+str(self.frames.temp_frame))
+        print('labels: ' +str(self.labels))
+
     def label_i(self, *args):
         pass
+
+    def call_i(self, *args):
+        self.run(self.get_line(args[0][1]))
+
     def jump_i(self, *args):
-        pass
+        self.run(self.get_line(args[0][1]))
+        return 'return'
+
+    def return_i(self, *args):
+        return 'return'
+
+    def read_i(self, *args):
+        try:
+            in_val = self.input_text.pop()
+        except IndexError:
+            in_val = input()
+
+        typ, val = self.frames.get_tuple(*args[1])
+
+        if val == 'int':
+            try:
+                in_val = int(in_val)
+            except ValueError:
+                in_val = '0'
+        elif val == 'string':
+            in_val = str(in_val)
+        elif val == 'bool':
+            if in_val.lower() == 'true':
+                in_val = 'true'
+            else:
+                in_val = 'false'
+
+        self.frames.update_val(val + '@' + in_val, *args[0])
+                
+
+
     def jumpifeq_i(self, *args):
-        pass
+        if self.operation('==', *args) == 'bool@true':
+            self.jump_i(args[0])
+
     def jumpifneq_i(self, *args):
-        pass
-    def exit_i(self, *args):
-        pass
-    def break_i(self, *args):
-        pass
+        if self.operation('==', *args) == 'bool@false':
+            self.jump_i(args[0])
 
 
 def __main__():
@@ -238,19 +440,20 @@ def __main__():
         elif re.search(r'^--input=.+$', arg):
             input_file = arg.split('=')[1]
         else:
-            print("Error: Wrong parameters try --help")
             par_error()
 
     check_argv(source_file, input_file)
     root = ET.parse(source_file).getroot()
-    machine = Machine()
+    machine = Machine(input_file)
 
 
     for instr in root:
-        machine.run(instr)
-    print('globFrame: '+str(machine.frames.global_frame))
-    print('allFrames: '+str(machine.frames.stack_frames))
-    print('tempFrames: '+str(machine.frames.temp_frame))
+        machine.instr_queue.append(instr)
+        if instr.attrib['opcode'].lower() == 'label':
+            machine.add_label(instr[0].text, instr.attrib['order'])
+
+    machine.run(0)
+
 
 
 if __name__ == "__main__":

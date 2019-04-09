@@ -1,0 +1,8 @@
+.ippcode19
+
+defvar GF@some
+
+read GF@some int
+write GF@some
+break
+

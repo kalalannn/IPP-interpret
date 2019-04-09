@@ -1,0 +1,51 @@
+.ippcode19
+
+# void main() {
+#   int a, b, sum;
+#   a = 10;
+#   b = 20;
+#	sum = sum(a, b)
+#	print('sum: ', sum)
+# }	
+
+label main
+
+createframe
+pushframe
+
+createframe
+
+defvar LF@a 
+defvar LF@b
+defvar LF@sum
+
+move LF@a int@10
+move LF@b int@20
+
+defvar TF@par1
+defvar TF@par2
+
+move TF@par1 LF@a 
+move TF@par2 LF@b
+
+pushframe 
+call sum
+popframe
+pops LF@sum
+
+write string@sum\058\032
+write LF@sum
+write string@\010
+
+return
+
+
+label sum
+
+createframe
+
+defvar TF@retval
+add TF@retval LF@par1 LF@par2
+pushs TF@retval
+
+return
