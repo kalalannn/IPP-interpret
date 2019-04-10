@@ -1,0 +1,60 @@
+.ippcode19
+
+defvar GF@var1
+defvar GF@var2
+defvar GF@var3
+
+move GF@var1 int@10
+move GF@var2 string@opa
+move GF@var2 bool@true
+
+createframe
+pushframe
+
+defvar LF@lvar1
+defvar LF@lvar2
+defvar LF@lvar3
+
+move LF@lvar1 int@20
+move LF@lvar2 string@apo
+move LF@lvar3 bool@false
+
+createframe
+
+defvar TF@tvar1
+defvar TF@tvar2
+defvar TF@tvar3
+
+move TF@tvar1 int@20
+move TF@tvar2 string@apo
+move TF@tvar3 bool@false
+
+pushframe 
+
+move LF@tvar1 int@30
+move LF@tvar2 string@good
+move LF@tvar3 bool@true
+
+popframe
+
+popframe
+
+call success
+exit int@0
+
+label success
+pushframe
+
+jumpifneq err LF@lvar1 int@20
+jumpifneq err LF@lvar2 string@apo
+jumpifneq err LF@lvar3 bool@false
+
+write string@success\010
+return 
+
+label err
+write string@error\010
+exit int@1
+
+
+

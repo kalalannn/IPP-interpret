@@ -3,19 +3,39 @@ from sys import argv
 from sys import stderr
 import re
 import xml.etree.ElementTree as ET
-err_line = 1
+
+class Except(Exception):
+    pass
+class ParamError(Except):
+    pass
+class BadLabel(Except):
+    pass
+class BadTypes(Except):
+    pass
+class BadValue(Except):
+    pass
+class UndefVar(Except):
+    pass
+class UninitVar(Except):
+    pass
+class FrameError(Except):
+    pass
+class EmptyStack(Except):
+    pass
+class StringError(Except):
+    pass
 
 class Error(object):
-    def par_error()   :  print("Error: Parameter, try --help");  exit(10)
-    def bad_label()   : print("Error: Bad Label"); exit(52)
-    def bad_types() : print("Error: Bad types of operands"); exit(53)
-    def undefined_variable() : print("Error: Undefined variable"); exit(54)
-    def frame_error() :  print("Error: Frame does not exists");  exit(55)
-    def uninitilized_variable() : print("Error: Variable has not been initializated"); exit(56)
-    def empty_stack() : print("Error: Stack is empty"); exit(56)
-    def division_error() : print("Error: Division by zero"); exit(57)
-    def bad_value() : print("Error: Bad value"); exit(57)
-    def string_error() : print("Error: String error"); exit(58)
+    def ParamError()   :  print("Error: Parameter, try --help");  exit(10) # ParamError
+    def XmlError()   :  print("Error: Wrong XML Format");  exit(32) # XMLError 
+    def BadLabel()   : print("Error: Bad Label"); exit(52)                 # BadLabel
+    def BadTypes() : print("Error: Bad types of operands"); exit(53)       # BadTypes
+    def UndefVar() : print("Error: Undefined variable"); exit(54) # UndefVar
+    def FrameError() :  print("Error: Frame does not exists");  exit(55)   # FrameError
+    def UninitVar() : print("Error: Variable has not been initializated"); exit(56) # UninitVar
+    def EmptyStack() : print("Error: Stack is empty"); exit(56)            # EmptyStack
+    def BadValue() : print("Error: Bad value"); exit(57)                   # BadValue
+    def StringError() : print("Error: String error"); exit(58)             # StringError
 
 def print_help():
     print(
@@ -40,8 +60,7 @@ def print_help():
 
 def check_argv(source_file, input_file):
     if source_file == input_file == None:
-        print ('hete\n\n\n\\n\n\n')
-        par_error()
+        raise ParamError
 
 def str2bool(var) -> bool :
     return var.lower() in ['true']
@@ -59,18 +78,12 @@ class Frames(object):
         self.stack_frames = []    # stack is clean
         self.temp_frame = None    # temporary frame does not exist
 
-    def get_tuple(self, *symb):
-        if symb[0] == 'var':
-            return self.get_val(symb[1]).split('@')
-        else:
-            return symb
-
     def createframe(self):
         self.temp_frame = {}
 
     def pushframe(self):
         if self.temp_frame == None:
-            frame_error()
+            raise FrameError
         self.stack_frames.append(self.temp_frame)
         self.temp_frame = None
 
@@ -78,70 +91,72 @@ class Frames(object):
         try:
             self.temp_frame = self.stack_frames.pop()
         except IndexError:
-            frame_error()
+            raise FrameError
 
-    def check_frame(self, frame):  # check if frame is not empty
-        if frame == 'GF':
-            pass
-        elif frame == 'LF':
-            if self.stack_frames == []:
-                frame_error()
-        elif frame == 'TF':
-            if self.temp_frame ==  None:
-                frame_error()
-
-    def check_var(self, var):       # check if var was defined
+    def def_var(self, var):          # define var
         frame, name = var.split('@')
-        self.check_frame(frame)
-        if frame == 'GF':
-            try :
-                self.global_frame[name]
-            except KeyError:
-                undefined_variable()
-        elif frame == 'LF':
-            try:
-                self.stack_frames[-1][name]
-            except KeyError:
-                undefined_variable()
-        elif frame == 'TF':
-            try:
-                self.temp_frame[name]
-            except KeyError:
-                undefined_variable()
-
-    def defvar(self, var):          # define var
-        frame, name = var.split('@')
-        self.check_frame(frame)
         if frame == 'GF':
             self.global_frame[name] = "None@None"
         elif frame == 'LF':
-            self.stack_frames[-1][name] = "None@None"
+            try:
+                self.stack_frames[-1][name] = "None@None"
+            except IndexError:
+                raise FrameError
         elif frame == 'TF':
-            self.temp_frame[name] = "None@None"
+            try:
+                self.temp_frame[name] = "None@None"
+            except TypeError:
+                raise FrameError
+
+    def check_var(self, var):       # check if var was defined  # var = 'FR@val'
+        frame, name = var.split('@')
+        if frame == 'GF':
+            try:
+                self.global_frame[name] 
+            except KeyError:
+                raise UndefVar
+        elif frame == 'LF':
+            try:
+                self.stack_frames[-1][name]
+            except IndexError:
+                raise FrameError
+            except KeyError:
+                raise UndefVar
+        elif frame == 'TF':
+            try:
+                self.temp_frame[name]
+            except TypeError:
+                raise FrameError
+            except KeyError:
+                raise UndefVar
 
     def get_val(self, var) -> str:         # get value of defined variable
         frame, name = var.split('@')
-        self.check_frame(frame)
-        self.check_var(var)
+        self.check_var(var)  
 
         if frame == 'GF':  # check <var> and frames
-            return self.global_frame[name] 
+            return self.global_frame[name]
         elif frame == 'LF':
             return self.stack_frames[-1][name]
         elif frame == 'TF':
-            return self.temp_frame[name] 
+            return self.temp_frame[name]
 
     def update_val(self, val, *var): # update value of defined variable
-        frame, name = var[1].split('@')
-        self.check_frame(frame)
         self.check_var(var[1])
 
+        frame, name = var[1].split('@')
         if frame ==  'GF':
             self.global_frame[name] = val
         elif frame == 'LF':
             self.stack_frames[-1][name] = val
         elif frame == 'TF':
             self.temp_frame[name] = val
+
+    def get_tuple(self, *symb):
+        if symb[0] == 'var':
+            return self.get_val(symb[1]).split('@')
+        else:
+            return symb
 
 class Machine(object):
     def __init__(self, input_file):
@@ -156,29 +171,44 @@ class Machine(object):
             self.input_text = [x.strip() for x  in self.input_text]
             self.input_text.reverse()
 
-    def add_label(self, name, line):
+    def add_line(self, name, line):
         self.labels[name] = line 
-
-    def run(self, run_line):
-        temp = self.instr_queue[run_line:]
-        for instr in temp:
-            action = getattr(self, instr.attrib['opcode'].lower()+'_i')
-            args = tuple((x.attrib['type'], x.text) for x in instr)
-            ret = action(*args)
-            if ret == 'return': #tuple(tuple(type, text))
-                break;
 
     def get_line(self, name) -> int:
         try: 
             return int(self.labels[name])
         except KeyError:
-            bad_label()
+            raise BadLabel
+
+    def run(self, run_line):
+        for instr in self.instr_queue[run_line:]:
+            try:
+                action = getattr(self, instr.attrib['opcode'].lower()+'_i')
+            except AttributeError:
+                Error.XmlError()
+
+            args = tuple((x.attrib['type'], x.text) for x in instr)
+            try:
+                ret = action(*args)
+                if ret == 'return': #tuple(tuple(type, text))
+                    break;
+            except Exception as Ex:
+                err = "Order " + instr.attrib['order'] + ": " + instr.attrib['opcode']
+                for arg in instr:
+                    if arg.attrib['type'] == 'var':
+                        err += ' ' + arg.text
+                    else:
+                        err += " {0}@{1}".format(arg.attrib['type'], arg.text)
+
+                print(err)
+                action = getattr(Error, type(Ex).__name__)
+                action()
 
     def write_i(self, *args):
         typ, val = self.frames.get_tuple(*args[0])
 
         if typ == 'None':
-            uninitilized_variable()
+            raise UninitVar
         elif typ == 'nil':
             return 
         elif typ == 'string':
@@ -188,10 +218,11 @@ class Machine(object):
             
     def dprint_i(self, *args):
         typ, val = self.frames.get_tuple(*args[0])
+
         if typ == 'int':
             stderr.write(val)
         else:
-            bad_types()
+            raise BadTypes
 
     def createframe_i(self, *empty):
         self.frames.createframe()
@@ -203,25 +234,25 @@ class Machine(object):
         self.frames.pushframe()
 
     def defvar_i(self, *args):
-        self.frames.defvar(args[0][1])
+        self.frames.def_var(args[0][1])
 
     def move_i(self, *args): # <var> <symb>
         typ, val = self.frames.get_tuple(*args[1])
         if typ == 'None':
-            uninitilized_variable()
+            raise UninitVar
         self.frames.update_val(typ + '@' + val, *args[0])
         
     def pushs_i(self, *args):
         typ, val = self.frames.get_tuple(*args[0])
         if typ == 'None':
-            uninitilized_variable()
+            raise UninitVar
         self.data_stack.append(typ + '@' + val)
 
     def pops_i(self, *args):
         try:
             val = self.data_stack.pop()
         except IndexError:
-            empty_stack()
+            raise EmptyStack
         self.frames.update_val(val, *args[0])
 
     def operation(self, operation, *args):
@@ -232,7 +263,7 @@ class Machine(object):
                 val = typ1 + '@' + str(not str2bool(val1)).lower()
                 return val
             else:
-                bad_types()
+                raise BadTypes
 
         typ2, val2 = self.frames.get_tuple(*args[2])
 
@@ -247,9 +278,9 @@ class Machine(object):
             val2 = str2bool(val2)
         elif typ1 == 'nil' or typ2 == 'nil':
             if operation != '==':
-                bad_types()
-        else :
-            bad_types()
+                raise BadTypes
+        else:
+                raise BadTypes
 
         if operation in ['<', '>', '==']:
             typ1 = 'bool'
@@ -257,7 +288,7 @@ class Machine(object):
         if (operation in ['+', '-', '*', '/'] and (typ1 != 'int' or typ2 != 'int')) or \
                 (operation in ['concat'] and (typ1 != 'string' or typ2 != 'string')) or \
                 (operation in ['and', 'or'] and (typ1 != 'bool' or typ2 != 'bool')):
-            bad_types()
+            raise BadTypes
 
         if operation == '+' or operation == 'concat':
             val = str(val1 + val2)
@@ -269,7 +300,7 @@ class Machine(object):
             try:
                 val = str(int(val1) // int(val2))
             except ZeroDivisionError:
-                division_error()
+                raise BadValue
         elif operation == '<':
             val = str(val1 < val2).lower()
         elif operation == '>':
@@ -312,31 +343,30 @@ class Machine(object):
         typ, val = self.frames.get_tuple(*args[1])
 
         if typ != 'int':
-            bad_types()
-
+            raise BadTypes
         try:
             self.frames.update_val('string' + '@' + chr(int(val)), *args[0])
         except ValueError:
-            string_error()
+            raise StringError
 
     def stri2int_i(self, *args):
         typ1, val1 = self.frames.get_tuple(*args[1])
         typ2, val2 = self.frames.get_tuple(*args[2])
 
         if typ1 != 'string' or typ2 != 'int':
-            bad_types()
+            raise BadTypes
 
         val1 = str2str(val1)
 
         try:
             self.frames.update_val('int' + '@' + str(ord(val1[int(val2)])), *args[0])
         except IndexError:
-            string_error()
+            raise StringError
 
     def exit_i(self, *args):
         typ, val = self.frames.get_tuple(*args[0])
         if typ != 'int' or not(0 <= int(val) <= 49):
-            bad_value()
+            raise BadValue
         exit(int(val))
 
     def type_i(self, *args):
@@ -348,7 +378,7 @@ class Machine(object):
     def strlen_i(self, *args):
         typ, val = self.frames.get_tuple(*args[1])
         if typ != 'string':
-            bad_types()
+            raise BadTypes
         self.frames.update_val('int@' + str(len(val)), *args[0])
 
     def getchar_i(self, *args):
@@ -356,31 +386,34 @@ class Machine(object):
         typ2, val2 = self.frames.get_tuple(*args[2])
 
         if typ1 != 'string' or typ2 != 'int':
-            bad_types()
+            raise BadTypes
         try: 
             self.frames.update_val('string@' + val1[int(val2)], *args[0])
         except IndexError:
-            string_error()
+            raise StringError
 
     def setchar_i(self, *args):
         typ0, val0 = self.frames.get_tuple(*args[0])
         typ1, val1 = self.frames.get_tuple(*args[1])
         typ2, val2 = self.frames.get_tuple(*args[2])
         if typ0 != 'string' or typ1 != 'int' or typ2 != 'string':
-            bad_types()
+            raise BadTypes
         try: 
             val0 = list(val0)
             val0[int(val1)] = val2[0]
             self.frames.update_val('string@' + "".join(val0), *args[0])
         except IndexError:
-            string_error()
+            raise StringError
 
     def break_i(self, *args):
+        print("\n-------------------------------")
         print('stack: ' + str(self.data_stack))
         print('globFrame: '+str(self.frames.global_frame))
         print('allFrames: '+str(self.frames.stack_frames))
         print('tempFrames: '+str(self.frames.temp_frame))
         print('labels: ' +str(self.labels))
+        print('input:'  +str(self.input_text))
+        print('-------------------------------')
 
     def label_i(self, *args):
         pass
@@ -405,7 +438,7 @@ class Machine(object):
 
         if val == 'int':
             try:
-                in_val = int(in_val)
+                in_val = str(int(in_val))
             except ValueError:
                 in_val = '0'
         elif val == 'string':
@@ -417,16 +450,14 @@ class Machine(object):
                 in_val = 'false'
 
         self.frames.update_val(val + '@' + in_val, *args[0])
-                
-
 
     def jumpifeq_i(self, *args):
         if self.operation('==', *args) == 'bool@true':
-            self.jump_i(args[0])
+            return self.jump_i(args[0])
 
     def jumpifneq_i(self, *args):
         if self.operation('==', *args) == 'bool@false':
-            self.jump_i(args[0])
+            return self.jump_i(args[0])
 
 
 def __main__():
@@ -440,21 +471,23 @@ def __main__():
         elif re.search(r'^--input=.+$', arg):
             input_file = arg.split('=')[1]
         else:
-            par_error()
+            Error.param_error()
 
     check_argv(source_file, input_file)
-    root = ET.parse(source_file).getroot()
-    machine = Machine(input_file)
+    try:
+        root = ET.parse(source_file).getroot()
+    except ET.ParseError:
+        Error.XmlError()
 
+    machine = Machine(input_file)
 
     for instr in root:
         machine.instr_queue.append(instr)
         if instr.attrib['opcode'].lower() == 'label':
-            machine.add_label(instr[0].text, instr.attrib['order'])
+            machine.add_line(instr[0].text, instr.attrib['order'])
 
     machine.run(0)
-
-
+    exit(0)
 
 if __name__ == "__main__":
     __main__()

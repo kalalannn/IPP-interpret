@@ -4,17 +4,16 @@ define('PAR_ERROR', 10);
 
 $directory = './';
 $parse_script = './parse.php';
-$int_script = './interpret.php';
+$int_script = './interpret.py';
 $recursive = false;
 $int_only = false;
 $parse_only = false;
-$php = 'php7.3';
 $prog_name = $argv[0];
-$tests = '<hr>';
+$tests = '';
 $number_of_test = 1;
 $coding = '"utf-8"';
 
-foreach ($argv as $arg) {
+foreach (array_slice($argv, 1) as $arg) {
 	if ($arg == "--help") {
 		print_help();
 		exit(OK);
@@ -26,7 +25,9 @@ foreach ($argv as $arg) {
 		$int_only = true;
 	} elseif (preg_match("/^--directory=.*$/", $arg)) {
 		$dir = explode('=', $arg);
-		$directory = $dir[1];
+		if (is_dir($directory)) {
+			$directory = $dir[1];
+		}
 		if (!(preg_match('/^.*\/$/', $directory))) {
 			$directory = $directory.'/';
 		}
@@ -36,8 +37,6 @@ foreach ($argv as $arg) {
 	} elseif (preg_match("/^--int-script=.*$/", $arg)) {
 		$file = explode('=', $arg);
 		$int_script = $file[1];
-	} elseif ($arg == $prog_name) {
-		continue;
 	} else {
 		echo "ParError: Wrong argument\n";
 		exit(PAR_ERROR);
@@ -51,6 +50,11 @@ if ($parse_only == $int_only && $parse_only == true) {
 
 __main__($directory);
 
+$pars = '';
+foreach (array_slice($argv, 1) as $par) {
+	$pars = $pars."<p>".$par."</p>"."\n";
+}
+	
 
 echo (
 	"<!doctype html>\n".
@@ -60,7 +64,10 @@ echo (
 	"      <title>test.php output</title>\n".
 	"  </head>\n".
 	"  <body>\n".
-	"    <h1>Tests result</h1>\n".
+	"    <h1>Tests results</h1>\n".
+	"    <h3>Params: </h3>\n".
+	$pars."\n".
+	"<hr>\n".
 	$tests."\n".
 	"  </body>\n".
 	"</html>\n");
@@ -91,39 +98,123 @@ function print_help() {
 }
 
 
-function generate_test_html($path, $parser_src, $parser_out, $test_out, $parser_rc, $test_rc, $test_in) {
+function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int_rc, $test_out, $test_rc, $test_in) {
 	global $tests, $number_of_test;
 	$lang = '"xml"';
-	$tests = $tests.
-	"    <h2>Test $number_of_test</h2>\n".
-	"    <h3>$path.src</h3>\n".
-	"    <pre>".$parser_src."</pre>\n".
-	"    <h3>Parser output</h3>\n".
-	"    <pre lang=$lang>".$parser_out."</pre>\n".
-	"    <h3>$path.out</h3>\n".
-	"    <pre lang=$lang>".$test_out."</pre>\n".
-	"    <h3>Parser return code</h3>\n".
-	"    <pre>$parser_rc</pre>\n".
-	"    <h3>$path.rc</h3>\n".
-	"    <pre>$test_rc</pre>\n".
-	"    <h3>$path.in</h3>\n".
-	"    <pre>$test_in</pre>\n".
-	"    <hr>\n";
 
+	if (is_null($int_rc)) { 			# parse-only
+		$output = ''.
+			"    <h3>Parser output</h3>\n".
+			"    <pre lang=$lang>".$parser_out."</pre>\n".
+			"    <h3>Test output</h3>\n".
+			"    <pre lang=$lang>".$test_out."</pre>\n".
+			"    <h3>Parser rc</h3>\n".
+			"    <pre>$parser_rc</pre>\n".
+			"    <h3>Test rc</h3>\n".
+			"    <pre>$test_rc</pre>\n";
+		if ($test_rc == $parser_rc) {
+			$color = '"color:#008000"'; # green
+		} else {
+			$color = '"color:#FF0000"'; # red
+		}
+
+	} elseif (is_null($parser_rc)) { 	# int_only
+		$output = ''.
+			"    <h3>Interpret output</h3>\n".
+			"    <pre lang=$lang>".$int_out."</pre>\n".
+			"    <h3>Test in</h3>\n".
+			"    <pre>$test_in</pre>\n".
+			"    <h3>Test output</h3>\n".
+			"    <pre lang=$lang>".$test_out."</pre>\n".
+			"    <h3>Interpret rc</h3>\n".
+			"    <pre>$int_rc</pre>\n".
+			"    <h3>Test rc</h3>\n".
+			"    <pre>$test_rc</pre>\n";
+		if ($test_rc == $int_rc) {
+			if ($test_out == $int_out) { # my err string
+				$color = '"color:#008000"'; # green
+			} elseif ($int_rc == 0) {
+				$color = '"color:#FF0000"'; # red
+			} else {
+				$color = '"color:#FFA500"'; # orange
+			}
+		} else {
+			$color = '"color:#FF0000"'; # red
+		}
+	} else {
+		$output = ''.
+			"    <h3>Parser output</h3>\n".
+			"    <pre lang=$lang>".$parser_out."</pre>\n".
+			"    <h3>Parser rc</h3>\n".
+			"    <pre>$parser_rc</pre>\n".
+			"    <h3>Test in</h3>\n".
+			"    <pre>$test_in</pre>\n".
+			"    <h3>Interpret output</h3>\n".
+			"    <pre lang=$lang>".$int_out."</pre>\n".
+			"    <h3>Test output</h3>\n".
+			"    <pre lang=$lang>".$test_out."</pre>\n".
+			"    <h3>Interpret rc</h3>\n".
+			"    <pre>$int_rc</pre>\n".
+			"    <h3>Test rc</h3>\n".
+			"    <pre>$test_rc</pre>\n";
+		if ($test_rc == $int_rc) {
+			if ($test_out == $int_out) { # my err string
+				$color = '"color:#008000"'; # green
+			} elseif ($int_rc == 0) {
+				$color = '"color:#FF0000"'; # red
+			} else {
+				$color = '"color:#FFA500"'; # orange
+			}
+		} else {
+			$color = '"color:#FF0000"'; # red
+		}
+	}
+
+	$head = ''.
+		"    <h2 style=$color>Test $number_of_test</h2>\n".
+		"    <h3>$path.src</h3>\n".
+		"    <pre>".$src."</pre>\n";
+
+	$tests = $tests.$head.$output."<hr>\n";
 	$number_of_test++;
 }
 
 function make_test($file_name, $directory) {
-	global $parse_script, $int_script, $recursive, $int_only, $parse_only, $php, $tests;
+	global $parse_script, $int_script, $recursive, $int_only, $parse_only;
 	$path = $directory.$file_name;
-	$command = $php.' '.$parse_script.' '.'<'.' '.$path.'.src';
-	system($command.' >'.$file_name.'.parser.out', $parser_rc);
-	$parser_src = file_get_contents($path.'.src');
-	$parser_out = file_get_contents($file_name.'.parser.out');
+
+	$src = file_get_contents($path.'.src');
 	$test_out = file_get_contents($path.'.out');
 	$test_in = file_get_contents($path.'.in');
 	$test_rc = file_get_contents($path.'.rc');
-	generate_test_html($path, htmlentities($parser_src), htmlentities($parser_out), htmlentities($test_out), $parser_rc, $test_rc, $test_in);
+
+	$parser_out = NULL;
+	$parser_rc = NULL;
+	$int_out = NULL;
+	$int_rc = NULL;
+
+	$parse = 'php7.3 '.$parse_script.' '.'<'.' '.$path.'.src';
+	$int = 'python3 '.$int_script.' --source='.$path.'.src'.' --input='.$path.'.in';
+
+	if ($parse_only == true) {
+		system($parse.' >'.$path.'.parser.out', $parser_rc);
+		$parser_out = file_get_contents($path.'.parser.out');
+		system('rm -rf '.$path.'.parser.out');
+	} elseif ($int_only == true) {
+		system($int.' >'.$path.'.int.out', $int_rc);
+		$int_out =  file_get_contents($path.'.int.out');
+		system('rm -rf '.$path.'.int.out');
+	} else {
+		$int = 'python3 '.$int_script.' --source='.$path.'.parser.out'.' --input='.$path.'.in';
+		system($parse.' >'.$path.'.parser.out', $parser_rc);
+		$parser_out = file_get_contents($path.'.parser.out');
+		system($int.' >'.$path.'.int.out', $int_rc);
+		$int_out =  file_get_contents($path.'.int.out');
+		system('rm -rf '.$path.'.parser.out');
+		system('rm -rf '.$path.'.int.out');
+	}
+	generate_test_html($path, htmlentities($src), htmlentities($parser_out), $parser_rc, htmlentities($int_out), $int_rc, htmlentities($test_out), $test_rc, htmlentities($test_in));
+
 }
 
 function check_files($file_name, $directory) {
