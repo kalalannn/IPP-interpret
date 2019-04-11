@@ -1,5 +1,0 @@
-.IFJcode18
-defvar GF@vysl
-move GF@vysl bool@false
-not GF@vysl GF@vysl
-write GF@vysl

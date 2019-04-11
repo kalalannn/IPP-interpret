@@ -39,6 +39,7 @@ class StringError(Except):
 """
 class Error(object):
     def ParamError()  : print("Error: Parameter, try --help");    exit(10) 
+    def FileError()   : print("Error: Can not open file");        exit(11)
     def XmlError()    : print("Error: Wrong XML Format");         exit(32) 
     def BadLabel()    : print("Error: Bad Label");                exit(52)           
     def BadTypes()    : print("Error: Bad types of operands");    exit(53)  
@@ -628,7 +629,7 @@ def __main__():
     except TypeError:
         Error.ParamError()
     except FileNotFoundError:
-        Error.ParamError()
+        Error.FileError()
 
     machine = Machine(input_file)
 

@@ -1,9 +1,9 @@
-# Documentation of IPP 2018/2019, 1 task 
+# Documentation of IPP 2018/2019, 1 task Parser
 Full technical documentation: `doc.pdf`
 * Author: Nikolaj Vorobiev, xvorob00@stud.fit.vutbr.cz
 * Login: xvorob00
 * Version: 1.0
-* Licence GNU GPL3
+* License GNU GPL3
 
 ## Usage: 
 ```bash

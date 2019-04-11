@@ -1,10 +1,17 @@
 <?php
+
+/* !
+ * @author  Nikolaj Vorobiev
+ * @license GNU GPL3
+ */
+
 define('OK', 0);
 define('PAR_ERROR', 10);
 define('GREEN', '"color:#008000"');
 define('RED', '"color:#FF0000"');
 define('ORANGE', '"color:#FFA500"');
 
+# defaults
 $directory = './';
 $parse_script = './parse.php';
 $int_script = './interpret.py';
@@ -12,14 +19,18 @@ $recursive = false;
 $int_only = false;
 $parse_only = false;
 $prog_name = $argv[0];
-$tests = '';
 $number_of_test = 1;
 $coding = '"utf-8"';
 $red_tests = 0;
 $orange_tests = 0;
 $green_tests = 0;
+$tests = '';
 $err_tests = '';
+$red = RED;
+$green = GREEN;
+$orange = ORANGE;
 
+# Arguments
 foreach (array_slice($argv, 1) as $arg) {
 	if ($arg == "--help") {
 		print_help();
@@ -55,18 +66,12 @@ if ($parse_only == $int_only && $parse_only == true) {
 	exit(PAR_ERROR);
 }
 
-__main__($directory);
+test($directory);
 
 $pars = '';
 foreach (array_slice($argv, 1) as $par) {
 	$pars = $pars."<p>".$par."</p>"."\n";
 }
-	
-
-
-$red = RED;
-$green = GREEN;
-$orange = ORANGE;
 
 echo (
 	"<!doctype html>\n".
@@ -113,7 +118,10 @@ function print_help() {
 	);
 }
 
-
+/*! 
+ *
+ * @brief Generate html from test results
+ */
 function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int_rc, $test_out, $test_rc, $test_in) {
 	global $tests, $err_tests, $number_of_test;
 	$lang = '"xml"';
@@ -184,13 +192,11 @@ function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int
 		} else {
 			$color = RED; # red
 		}
-
 	}
 	$head = ''.
 		"    <h2 style=$color>Test $number_of_test</h2>\n".
 		"    <h3>$path.src</h3>\n".
 		"    <pre>".$src."</pre>\n";
-
 
 	global $red_tests, $orange_tests, $green_tests;
 	if ($color == RED) { # red
@@ -206,6 +212,11 @@ function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int
 	$number_of_test++;
 }
 
+/*!
+ * Make test
+ * Diff Parser/Interpret out with test out
+ * Diff Parser/Interpret rc  with test rc
+ */
 function make_test($file_name, $directory) {
 	global $parse_script, $int_script, $recursive, $int_only, $parse_only;
 	$path = $directory.$file_name;
@@ -244,25 +255,28 @@ function make_test($file_name, $directory) {
 
 }
 
+/* !
+ * If file not exist: generate file
+ */
 function check_files($file_name, $directory) {
 	foreach (array('.in', '.out', '.rc') as $file_ext) {
 		if (is_file($directory.$file_name.$file_ext)) {
 			continue;
 		} else {
-			//echo "Action: touch $directory.$file_name.$file_ext\n";
 			touch($directory.$file_name.$file_ext);
 			if($file_ext == '.rc') {
-				//echo "Action: put 0 to $directory.$file_name.$file_ext\n";
 				file_put_contents($directory.$file_name.$file_ext, '0');
 			}
 		}
 	}
 }
 
-function __main__($directory) {
+/* !
+ * Main loop
+ */
+function test($directory) {
 	global $recursive;
 	$file_array = array();
-	//echo $directory."\n";
 	foreach (scandir($directory) as $file) {
 		if(preg_match('/^.*.src$/', $directory.$file)) {
 			$file_name = explode('.',  $file);
@@ -272,9 +286,8 @@ function __main__($directory) {
 		} elseif ($file == '.' || $file == '..') {
 			continue;
 		} elseif (is_dir($directory.$file) && $recursive == true) {
-			__main__($directory.$file.'/');
+			test($directory.$file.'/');
 		}
 	}
 }
-
 ?>
