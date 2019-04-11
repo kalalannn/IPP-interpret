@@ -38,17 +38,20 @@ class StringError(Except):
     Interpret Error functions and exit codes
 """
 class Error(object):
-    def ParamError()   :  print("Error: Parameter, try --help");  exit(10) # ParamError
-    def XmlError()   :  print("Error: Wrong XML Format");  exit(32) # XMLError 
-    def BadLabel()   : print("Error: Bad Label"); exit(52)                 # BadLabel
-    def BadTypes() : print("Error: Bad types of operands"); exit(53)       # BadTypes
-    def UndefVar() : print("Error: Undefined variable"); exit(54) # UndefVar
-    def FrameError() :  print("Error: Frame does not exists");  exit(55)   # FrameError
-    def UninitVar() : print("Error: Variable has not been initializated"); exit(56) # UninitVar
-    def EmptyStack() : print("Error: Stack is empty"); exit(56)            # EmptyStack
-    def BadValue() : print("Error: Bad value"); exit(57)                   # BadValue
-    def StringError() : print("Error: String error"); exit(58)             # StringError
+    def ParamError()  : print("Error: Parameter, try --help");    exit(10) 
+    def XmlError()    : print("Error: Wrong XML Format");         exit(32) 
+    def BadLabel()    : print("Error: Bad Label");                exit(52)           
+    def BadTypes()    : print("Error: Bad types of operands");    exit(53)  
+    def UndefVar()    : print("Error: Undefined variable");       exit(54) 
+    def FrameError()  : print("Error: Frame does not exists");    exit(55) 
+    def UninitVar()   : print("Error: Uninitializated variable"); exit(56)
+    def EmptyStack()  : print("Error: Stack is empty");           exit(56)         
+    def BadValue()    : print("Error: Bad value");                exit(57)              
+    def StringError() : print("Error: String error");             exit(58)           
 
+"""
+    Help function
+"""
 def print_help():
     print(
         "****|===================================================|****\n"+
@@ -73,9 +76,22 @@ def print_help():
 """
     Check program arguments
 """
-def check_argv(source_file, input_file):
+def check_argv():
+    source_file = None
+    input_file = None
+    for arg in argv[1:]:
+        if re.search(r'^--help$', arg):
+            print_help()
+        elif re.search(r'^--source=.+$', arg):
+            source_file = arg.split('=')[1]
+        elif re.search(r'^--input=.+$', arg):
+            input_file = arg.split('=')[1]
+        else:
+            Error.ParamError()
+
     if source_file == input_file == None:
         Error.ParamError()
+    return source_file, input_file
 
 def str2bool(var) -> bool :
     return var.lower() in ['true']
@@ -227,9 +243,10 @@ class Machine(object):
     """
         Run instructions in instr_stack from run_order
         Get <instr_name> and call Machine.<instr_name>_i(*args)
-        If not matched returns XMLError
+        If not matched: returns XMLError
         <*args> have this format: tuple(tuple(type, val), tuple(type, val), tuple(type, val))
-        'return' from 
+        'return' from Machine.return_i(*args) stops loop 
+        If <Exception>: write err_order, call Error.type(<Exception>).__name__()
     """
     def run(self, run_order):
         for instr in self.instr_stack[run_order:]:
@@ -241,22 +258,33 @@ class Machine(object):
 
             args = tuple((x.attrib['type'], x.text) for x in instr)
             try:
-                ret = action(*args)
+                ret = action(*args) 
                 if ret == 'return': # return_i
                     break;
             except Exception as Ex:
-                err = "Order " + instr.attrib['order'] + ": " + instr.attrib['opcode']
+                err_order = "Order " + instr.attrib['order'] + ": " + instr.attrib['opcode']
                 for arg in instr:
                     if arg.attrib['type'] == 'var':
-                        err += ' ' + arg.text
+                        err_order += ' ' + arg.text
                     else:
-                        err += " {0}@{1}".format(arg.attrib['type'], arg.text)
+                        err_order += " {0}@{1}".format(arg.attrib['type'], arg.text)
 
-                print(err)
+                print(err_order)
                 action = getattr(Error, type(Ex).__name__)
                 action()
 
-    def write_i(self, *args):
+#==========================================================#
+# Instuctions                                              #
+# View details in IPP-interpret/other/ipp19spec.pdf        #
+#==========================================================#
+
+#==========================================================#
+# Output                                                   #
+#    Write                                                 #
+#    DPrint                                                #
+#==========================================================#
+
+    def write_i(self, *args): # val -> stdout
         typ, val = self.frames.get_tuple(*args[0])
 
         if typ == 'None':
@@ -268,7 +296,7 @@ class Machine(object):
         else :
             print(val, end='')
             
-    def dprint_i(self, *args):
+    def dprint_i(self, *args): # val -> stderr
         typ, val = self.frames.get_tuple(*args[0])
 
         if typ == 'None':
@@ -276,6 +304,15 @@ class Machine(object):
         if typ != 'int':
             raise BadTypes
         stderr.write(val)
+
+#==========================================================#
+# Frames                                                   #
+#    createframe                                           #
+#    popframe                                              #
+#    pushframe                                             #
+#    defvar                                                #
+#    move                                                  #
+#==========================================================#
 
     def createframe_i(self, *empty):
         self.frames.createframe()
@@ -289,7 +326,7 @@ class Machine(object):
     def defvar_i(self, *args):
         self.frames.def_var(args[0][1])
 
-    def move_i(self, *args): # <var> <symb>
+    def move_i(self, *args): # arg0.value <- typ@val
         typ, val = self.frames.get_tuple(*args[1])
         if typ == 'None':
             raise UninitVar
@@ -299,18 +336,29 @@ class Machine(object):
             if typ == 'string':
                 self.frames.update_val(typ + '@' + '', *args[0])
 
-    def pushs_i(self, *args):
+#==========================================================#
+# Stack                                                    #
+#    pops                                                  #
+#    pushs                                                 #
+#==========================================================#
+
+    def pushs_i(self, *args): # data_stack.push <- typ@val
         typ, val = self.frames.get_tuple(*args[0])
         if typ == 'None':
             raise UninitVar
         self.data_stack.append(typ + '@' + val)
 
-    def pops_i(self, *args):
+    def pops_i(self, *args):  # data_stack.pop -> frame@name
         try:
             val = self.data_stack.pop()
         except IndexError:
             raise EmptyStack
         self.frames.update_val(val, *args[0])
+
+#==========================================================#
+# Operations                                               #
+#    add, sub, mul, idiv, and, or, not, eq, lt, gt, concat #
+#==========================================================#
 
     def operation(self, operation, *args):
         typ1, val1 = self.frames.get_tuple(*args[1])
@@ -324,6 +372,7 @@ class Machine(object):
 
         typ2, val2 = self.frames.get_tuple(*args[2])
 
+        # type control
         if typ1 == typ2 == 'int':
             val1 = int(val1)
             val2 = int(val2)
@@ -341,7 +390,8 @@ class Machine(object):
         else:
             raise BadTypes
 
-        if operation in ['<', '>', '==']:
+        
+        if operation in ['<', '>', '==']: # bool ret_type
             typ1 = 'bool'
 
         if (operation in ['+', '-', '*', '/'] and (typ1 != 'int' or typ2 != 'int')) or \
@@ -349,6 +399,7 @@ class Machine(object):
                 (operation in ['and', 'or'] and (typ1 != 'bool' or typ2 != 'bool')):
             raise BadTypes
 
+        # Operations
         if operation == '+' or operation == 'concat':
             val = str(val1 + val2)
         elif operation == '-': 
@@ -398,6 +449,14 @@ class Machine(object):
     def not_i(self, *args):
         self.frames.update_val(self.operation('not', *args), *args[0])
 
+#==========================================================#
+# Type                                                     #
+#    int -> char                                           #
+#    str -> int                                            #
+#    type                                                  #
+#    read                                                  #
+#==========================================================#
+
     def int2char_i(self, *args):
         typ, val = self.frames.get_tuple(*args[1])
         if typ == 'None':
@@ -424,19 +483,41 @@ class Machine(object):
         except IndexError:
             raise StringError
 
-    def exit_i(self, *args):
-        typ, val = self.frames.get_tuple(*args[0])
-        if typ == 'None':
-            raise UninitVar
-        if typ != 'int' or not(0 <= int(val) <= 49):
-            raise BadValue
-        exit(int(val))
-
     def type_i(self, *args):
         typ, val = self.frames.get_tuple(*args[1])
         if typ == 'None':
             typ = ""
         self.frames.update_val('string@' + typ, *args[0])
+
+    def read_i(self, *args):
+        try:
+            in_val = self.input_text.pop()
+        except IndexError:
+            in_val = input()
+
+        typ, val = self.frames.get_tuple(*args[1])
+
+        if val == 'int':
+            try:
+                in_val = str(int(in_val))
+            except ValueError:
+                in_val = '0'
+        elif val == 'string':
+            in_val = str(in_val)
+        elif val == 'bool':
+            if in_val.lower() == 'true':
+                in_val = 'true'
+            else:
+                in_val = 'false'
+
+        self.frames.update_val(val + '@' + in_val, *args[0])
+
+#==========================================================#
+# String                                                   #
+#    strlen                                                #
+#    getchar                                               #
+#    setchar                                               #
+#==========================================================#
 
     def strlen_i(self, *args):
         typ, val = self.frames.get_tuple(*args[1])
@@ -448,7 +529,6 @@ class Machine(object):
             self.frames.update_val('int@' + str(len(str2str(val))), *args[0])
         except AttributeError:
             self.frames.update_val('int@0', *args[0])
-
 
     def getchar_i(self, *args):
         typ1, val1 = self.frames.get_tuple(*args[1])
@@ -477,6 +557,54 @@ class Machine(object):
         except IndexError:
             raise StringError
 
+#==========================================================#
+# Control                                                  #
+#    label                                                 #
+#    call                                                  #
+#    jump                                                  #
+#    jumpifeq                                              #
+#    jumpifneq                                             #
+#    exit                                                  #
+#    return                                                #
+#==========================================================#
+
+    def label_i(self, *args):
+        pass
+
+    def call_i(self, *args):
+        self.run(self.get_order(args[0][1]))
+
+# Jumps recursive calls self.run()
+# jump on label and return previous self.run()
+
+    def jump_i(self, *args):
+        self.run(self.get_order(args[0][1]))
+        return 'return'
+
+    def jumpifeq_i(self, *args):
+        if self.operation('==', *args) == 'bool@true':
+            return self.jump_i(*args)
+
+    def jumpifneq_i(self, *args):
+        if self.operation('==', *args) == 'bool@false':
+            return self.jump_i(*args)
+
+    def exit_i(self, *args): # exit (range(50))
+        typ, val = self.frames.get_tuple(*args[0])
+        if typ == 'None':
+            raise UninitVar
+        if typ != 'int' or not(0 <= int(val) <= 49):
+            raise BadValue
+        exit(int(val))
+
+    def return_i(self, *args): # Ends loop in self.run()
+        return 'return'
+
+#==========================================================#
+# Debug                                                    #
+#     break                                                #
+#==========================================================#
+
     def break_i(self, *args):
         print("\n-------------------------------")
         print('stack: ' + str(self.data_stack))
@@ -487,73 +615,24 @@ class Machine(object):
         print('input:'  +str(self.input_text))
         print('-------------------------------')
 
-    def label_i(self, *args):
-        pass
-
-    def call_i(self, *args):
-        self.run(self.get_order(args[0][1]))
-
-    def jump_i(self, *args):
-        self.run(self.get_order(args[0][1]))
-        return 'return'
-
-    def return_i(self, *args):
-        return 'return'
-
-    def read_i(self, *args):
-        try:
-            in_val = self.input_text.pop()
-        except IndexError:
-            in_val = input()
-
-        typ, val = self.frames.get_tuple(*args[1])
-
-        if val == 'int':
-            try:
-                in_val = str(int(in_val))
-            except ValueError:
-                in_val = '0'
-        elif val == 'string':
-            in_val = str(in_val)
-        elif val == 'bool':
-            if in_val.lower() == 'true':
-                in_val = 'true'
-            else:
-                in_val = 'false'
-
-        self.frames.update_val(val + '@' + in_val, *args[0])
-
-    def jumpifeq_i(self, *args):
-        if self.operation('==', *args) == 'bool@true':
-            return self.jump_i(*args)
-
-    def jumpifneq_i(self, *args):
-        if self.operation('==', *args) == 'bool@false':
-            return self.jump_i(*args)
-
+#==========================================================#
+# Main
+#==========================================================#
 
 def __main__():
-    source_file = None
-    input_file = None
-    for arg in argv[1:]:
-        if re.search(r'^--help$', arg):
-            print_help()
-        elif re.search(r'^--source=.+$', arg):
-            source_file = arg.split('=')[1]
-        elif re.search(r'^--input=.+$', arg):
-            input_file = arg.split('=')[1]
-        else:
-            Error.ParamError()
-
-    check_argv(source_file, input_file)
+    source_file, input_file  = check_argv()
     try:
         root = ET.parse(source_file).getroot()
     except ET.ParseError:
         Error.XmlError()
+    except TypeError:
+        Error.ParamError()
+    except FileNotFoundError:
+        Error.ParamError()
 
     machine = Machine(input_file)
 
-    for instr in root:
+    for instr in root: # get all labels
         machine.instr_stack.append(instr)
         if instr.attrib['opcode'].lower() == 'label':
             machine.add_order(instr[0].text, instr.attrib['order'])
