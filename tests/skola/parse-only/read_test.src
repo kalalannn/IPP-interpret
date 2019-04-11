@@ -1,6 +1,0 @@
-.IPPcode19       #fs
-DEFVAR     GF@ab
-READ GF@ab int
-WRITE GF@ab
-WRITE string@\032<not-tag/>\032 
-WRITE bool@true 

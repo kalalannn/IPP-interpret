@@ -1,6 +1,9 @@
 <?php
 define('OK', 0);
 define('PAR_ERROR', 10);
+define('GREEN', '"color:#008000"');
+define('RED', '"color:#FF0000"');
+define('ORANGE', '"color:#FFA500"');
 
 $directory = './';
 $parse_script = './parse.php';
@@ -12,6 +15,10 @@ $prog_name = $argv[0];
 $tests = '';
 $number_of_test = 1;
 $coding = '"utf-8"';
+$red_tests = 0;
+$orange_tests = 0;
+$green_tests = 0;
+$err_tests = '';
 
 foreach (array_slice($argv, 1) as $arg) {
 	if ($arg == "--help") {
@@ -56,6 +63,11 @@ foreach (array_slice($argv, 1) as $par) {
 }
 	
 
+
+$red = RED;
+$green = GREEN;
+$orange = ORANGE;
+
 echo (
 	"<!doctype html>\n".
 	"<html>\n".
@@ -65,9 +77,13 @@ echo (
 	"  </head>\n".
 	"  <body>\n".
 	"    <h1>Tests results</h1>\n".
+	"    <p style=$red>red_tests: $red_tests</p>\n".
+	"    <p style=$green>green_tests: $green_tests</p>\n".
+	"    <p style=$orange>orange_tests: $orange_tests</p>\n".
 	"    <h3>Params: </h3>\n".
 	$pars."\n".
 	"<hr>\n".
+	$err_tests."\n".
 	$tests."\n".
 	"  </body>\n".
 	"</html>\n");
@@ -99,7 +115,7 @@ function print_help() {
 
 
 function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int_rc, $test_out, $test_rc, $test_in) {
-	global $tests, $number_of_test;
+	global $tests, $err_tests, $number_of_test;
 	$lang = '"xml"';
 
 	if (is_null($int_rc)) { 			# parse-only
@@ -113,9 +129,9 @@ function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int
 			"    <h3>Test rc</h3>\n".
 			"    <pre>$test_rc</pre>\n";
 		if ($test_rc == $parser_rc) {
-			$color = '"color:#008000"'; # green
+			$color = GREEN; # green
 		} else {
-			$color = '"color:#FF0000"'; # red
+			$color = RED;  # red
 		}
 
 	} elseif (is_null($parser_rc)) { 	# int_only
@@ -132,14 +148,14 @@ function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int
 			"    <pre>$test_rc</pre>\n";
 		if ($test_rc == $int_rc) {
 			if ($test_out == $int_out) { # my err string
-				$color = '"color:#008000"'; # green
+				$color = GREEN; # green
 			} elseif ($int_rc == 0) {
-				$color = '"color:#FF0000"'; # red
+				$color = RED; # red
 			} else {
-				$color = '"color:#FFA500"'; # orange
+				$color = ORANGE; # orange
 			}
 		} else {
-			$color = '"color:#FF0000"'; # red
+			$color = RED; # red
 		}
 	} else {
 		$output = ''.
@@ -159,23 +175,34 @@ function generate_test_html($path, $src, $parser_out, $parser_rc, $int_out, $int
 			"    <pre>$test_rc</pre>\n";
 		if ($test_rc == $int_rc) {
 			if ($test_out == $int_out) { # my err string
-				$color = '"color:#008000"'; # green
+				$color = GREEN; # green
 			} elseif ($int_rc == 0) {
-				$color = '"color:#FF0000"'; # red
+				$color = RED; # red
 			} else {
-				$color = '"color:#FFA500"'; # orange
+				$color = ORANGE; # orange
 			}
 		} else {
-			$color = '"color:#FF0000"'; # red
+			$color = RED; # red
 		}
-	}
 
+	}
 	$head = ''.
 		"    <h2 style=$color>Test $number_of_test</h2>\n".
 		"    <h3>$path.src</h3>\n".
 		"    <pre>".$src."</pre>\n";
 
-	$tests = $tests.$head.$output."<hr>\n";
+
+	global $red_tests, $orange_tests, $green_tests;
+	if ($color == RED) { # red
+		$err_tests = $err_tests.$head.$output."<hr>\n";
+		$red_tests++;
+	} elseif ($color == ORANGE) { # orange
+		$tests = $tests.$head.$output."<hr>\n";
+		$orange_tests++;
+	} elseif ($color == GREEN) { # green
+		$tests = $tests.$head.$output."<hr>\n";
+		$green_tests++;
+	}
 	$number_of_test++;
 }
 
